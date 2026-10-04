@@ -1,0 +1,603 @@
+{
+  "schema": 1,
+  "version": "2.41.15",
+  "scenarios": [
+    {
+      "id": "new",
+      "title": "A new repo",
+      "blurb": "Nothing is written yet, so the loop grows with the code.",
+      "repo": {
+        "name": "new-project",
+        "files": []
+      },
+      "index": [
+        "Indexed 0 files (0 lines), 0 imports, 0 tests",
+        "Languages: ",
+        "Areas: 0",
+        "Layers: 0 (depth 0 = foundation)",
+        "Wrote .cortex/index/index.json",
+        "Created .cortex/ — generated artifacts live here; .cortex/memory/ is committed on purpose.",
+        "Added to .gitignore: .cortex/index/, .cortex/findings/, .cortex/view/"
+      ],
+      "findings": {
+        "counts": {
+          "low": 1
+        },
+        "items": [
+          {
+            "severity": "low",
+            "title": "Greenfield repo — nothing to index yet"
+          }
+        ]
+      },
+      "loop": {
+        "greenfield": true,
+        "served": 0,
+        "total": 3,
+        "stages": [
+          "plan",
+          "design",
+          "build",
+          "test",
+          "deploy",
+          "maintain"
+        ],
+        "rows": [
+          {
+            "id": "intent",
+            "stage": "plan",
+            "status": "missing",
+            "title": "intent/ — the home for the artifact chain",
+            "why": "an idea with no committed home is re-litigated every time it is raised",
+            "needs": [],
+            "paths": [
+              "intent/README.md",
+              "intent/TEMPLATE.md"
+            ]
+          },
+          {
+            "id": "brief",
+            "stage": "build",
+            "status": "missing",
+            "title": "The root brief — what a new joiner would need on day one",
+            "why": "no dependency manifest found, so the brief has to be written from the interview",
+            "needs": [],
+            "paths": [
+              "AGENTS.md",
+              "CLAUDE.md",
+              "GEMINI.md"
+            ]
+          },
+          {
+            "id": "team",
+            "stage": "build",
+            "status": "blocked",
+            "title": "The agent team — one job per agent, each role picked on its own",
+            "why": "offers: architect, implementer, tester, reviewer — each picked on its own; project-manager waits: nothing to manage yet: no plan folder (intent/, docs/specs/ or docs/plans/)",
+            "needs": [
+              "code in the repo — a team has nothing yet to plan, test or review"
+            ],
+            "paths": [
+              ".claude/agents/",
+              ".claude/hooks/test-paths.sh",
+              ".claude/skills/team/SKILL.md",
+              "CLAUDE.md#Working as a team"
+            ]
+          },
+          {
+            "id": "verification",
+            "stage": "test",
+            "status": "missing",
+            "title": "The verification block — how Claude checks its own work",
+            "why": "greenfield, so the commands come from the interview rather than a manifest",
+            "needs": [
+              "a declared build, test or lint command — the block must name real ones"
+            ],
+            "paths": [
+              "CLAUDE.md#Verifying your work"
+            ]
+          },
+          {
+            "id": "verifier",
+            "stage": "test",
+            "status": "blocked",
+            "title": "The verifier subagent — a fresh context window that checks the work",
+            "why": "no runnable command declared yet — a verdict from a fresh context is not coloured by the assumptions that produced the code",
+            "needs": [
+              "a declared test or build command"
+            ],
+            "paths": [
+              ".claude/agents/verifier.md"
+            ]
+          },
+          {
+            "id": "evals",
+            "stage": "test",
+            "status": "blocked",
+            "title": "evals/ — regression tests for the agent's own configuration",
+            "why": "no CI detected is present — CLAUDE.md, skills and hooks steer the agent, so they deserve the regression testing code gets",
+            "needs": [
+              "a CI system to run the suite",
+              "CLAUDE.md or AGENTS.md — the configuration an eval regresses against"
+            ],
+            "paths": [
+              "evals/",
+              ".github/workflows/agent-evals.yml"
+            ]
+          },
+          {
+            "id": "review",
+            "stage": "deploy",
+            "status": "blocked",
+            "title": "REVIEW.md — the review policy every PR is judged against",
+            "why": "no generated paths detected, so the exclusions list starts empty and grows",
+            "needs": [
+              "code in the repo — there is nothing to write a review policy about yet"
+            ],
+            "paths": [
+              "REVIEW.md"
+            ]
+          },
+          {
+            "id": "review-ci",
+            "stage": "deploy",
+            "status": "blocked",
+            "title": "cortex-review.yml — every PR read against the repo's own documents, in CI",
+            "why": "no CI detected, and a review that runs only when someone remembers it is the one that gets skipped",
+            "needs": [
+              "GitHub Actions — the template is a GitHub workflow",
+              "AGENTS.md — the documents a pull request is reviewed against"
+            ],
+            "paths": [
+              ".github/workflows/cortex-review.yml"
+            ]
+          },
+          {
+            "id": "hooks",
+            "stage": "deploy",
+            "status": "blocked",
+            "title": "Hooks — the deterministic layer behind the advisory ones",
+            "why": "no generated paths and no declared formatter, so no hook has work to do here",
+            "needs": [
+              "a generated path or lockfile to protect, or a declared formatter — without either, both hooks would do nothing"
+            ],
+            "paths": [
+              ".claude/settings.json"
+            ]
+          },
+          {
+            "id": "bands",
+            "stage": "maintain",
+            "status": "blocked",
+            "title": "bands.yaml — what closes the loop back to intent",
+            "why": "a breach with no review gate has nowhere safe to escalate, so this stays closed for now",
+            "needs": [
+              "REVIEW.md — the gate a 3σ breach escalates into",
+              "a CI system to run the detection script"
+            ],
+            "paths": [
+              "bands.yaml"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "legacy",
+      "title": "A working project",
+      "blurb": "Code, tests and CI are there. No file tells an agent how the repo works.",
+      "repo": {
+        "name": "shop",
+        "files": [
+          ".github/workflows/ci.yml",
+          "README.md",
+          "package-lock.json",
+          "package.json",
+          "src/cart.js",
+          "src/checkout.js",
+          "src/server.js",
+          "test/cart.test.js"
+        ]
+      },
+      "index": [
+        "Indexed 7 files (50 lines), 3 imports, 1 tests",
+        "Languages: javascript 4, yaml 1, json 1, markdown 1",
+        "Areas: 4",
+        "Layers: 3 (depth 0 = foundation)",
+        "Wrote .cortex/index/index.json",
+        "Created .cortex/ — generated artifacts live here; .cortex/memory/ is committed on purpose.",
+        "Added to .gitignore: .cortex/index/, .cortex/findings/, .cortex/view/"
+      ],
+      "findings": {
+        "counts": {
+          "high": 1,
+          "medium": 1,
+          "low": 3
+        },
+        "items": [
+          {
+            "severity": "high",
+            "title": "No agent context file"
+          },
+          {
+            "severity": "medium",
+            "title": "No CONTEXT.md glossary"
+          },
+          {
+            "severity": "low",
+            "title": "No architecture decision records"
+          },
+          {
+            "severity": "low",
+            "title": "No committed memory store"
+          },
+          {
+            "severity": "low",
+            "title": "Hot spots"
+          }
+        ]
+      },
+      "loop": {
+        "greenfield": false,
+        "served": 0,
+        "total": 7,
+        "stages": [
+          "plan",
+          "design",
+          "build",
+          "test",
+          "deploy",
+          "maintain"
+        ],
+        "rows": [
+          {
+            "id": "intent",
+            "stage": "plan",
+            "status": "missing",
+            "title": "intent/ — the home for the artifact chain",
+            "why": "an idea with no committed home is re-litigated every time it is raised",
+            "needs": [],
+            "paths": [
+              "intent/README.md",
+              "intent/TEMPLATE.md"
+            ]
+          },
+          {
+            "id": "brief",
+            "stage": "build",
+            "status": "missing",
+            "title": "The root brief — what a new joiner would need on day one",
+            "why": "Express — read from package.json",
+            "needs": [],
+            "paths": [
+              "AGENTS.md",
+              "CLAUDE.md",
+              "GEMINI.md"
+            ]
+          },
+          {
+            "id": "team",
+            "stage": "build",
+            "status": "missing",
+            "title": "The agent team — one job per agent, each role picked on its own",
+            "why": "offers: architect, implementer, tester, reviewer — each picked on its own; project-manager waits: nothing to manage yet: no plan folder (intent/, docs/specs/ or docs/plans/)",
+            "needs": [],
+            "paths": [
+              ".claude/agents/",
+              ".claude/hooks/test-paths.sh",
+              ".claude/skills/team/SKILL.md",
+              "CLAUDE.md#Working as a team"
+            ]
+          },
+          {
+            "id": "verification",
+            "stage": "test",
+            "status": "missing",
+            "title": "The verification block — how Claude checks its own work",
+            "why": "test: npm test · lint: npm run lint — detected, so the block can name real commands",
+            "needs": [
+              "a declared build, test or lint command — the block must name real ones"
+            ],
+            "paths": [
+              "CLAUDE.md#Verifying your work"
+            ]
+          },
+          {
+            "id": "verifier",
+            "stage": "test",
+            "status": "missing",
+            "title": "The verifier subagent — a fresh context window that checks the work",
+            "why": "npm test — a verdict from a fresh context is not coloured by the assumptions that produced the code",
+            "needs": [
+              "a declared test or build command"
+            ],
+            "paths": [
+              ".claude/agents/verifier.md"
+            ]
+          },
+          {
+            "id": "evals",
+            "stage": "test",
+            "status": "blocked",
+            "title": "evals/ — regression tests for the agent's own configuration",
+            "why": ".github/workflows is present — CLAUDE.md, skills and hooks steer the agent, so they deserve the regression testing code gets",
+            "needs": [
+              "CLAUDE.md or AGENTS.md — the configuration an eval regresses against"
+            ],
+            "paths": [
+              "evals/",
+              ".github/workflows/agent-evals.yml"
+            ]
+          },
+          {
+            "id": "review",
+            "stage": "deploy",
+            "status": "missing",
+            "title": "REVIEW.md — the review policy every PR is judged against",
+            "why": "1 generated path(s) detected (package-lock.json) — the do-not-report list can name them",
+            "needs": [
+              "code in the repo — there is nothing to write a review policy about yet"
+            ],
+            "paths": [
+              "REVIEW.md"
+            ]
+          },
+          {
+            "id": "hooks",
+            "stage": "deploy",
+            "status": "missing",
+            "title": "Hooks — the deterministic layer behind the advisory ones",
+            "why": "protected paths to block: package-lock.json",
+            "needs": [
+              "a generated path or lockfile to protect, or a declared formatter — without either, both hooks would do nothing"
+            ],
+            "paths": [
+              ".claude/settings.json"
+            ]
+          },
+          {
+            "id": "review-ci",
+            "stage": "deploy",
+            "status": "blocked",
+            "title": "cortex-review.yml — every PR read against the repo's own documents, in CI",
+            "why": ".github/workflows is here, but there is no AGENTS.md yet for a PR to be read against",
+            "needs": [
+              "AGENTS.md — the documents a pull request is reviewed against"
+            ],
+            "paths": [
+              ".github/workflows/cortex-review.yml"
+            ]
+          },
+          {
+            "id": "bands",
+            "stage": "maintain",
+            "status": "blocked",
+            "title": "bands.yaml — what closes the loop back to intent",
+            "why": "a breach with no review gate has nowhere safe to escalate, so this stays closed for now",
+            "needs": [
+              "REVIEW.md — the gate a 3σ breach escalates into"
+            ],
+            "paths": [
+              "bands.yaml"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "team",
+      "title": "A team's repo",
+      "blurb": "The same project, shared: one committed context layer for every developer's agent.",
+      "repo": {
+        "name": "shop",
+        "files": [
+          ".cortex/connector.json",
+          ".github/workflows/ci.yml",
+          "README.md",
+          "package-lock.json",
+          "package.json",
+          "src/cart.js",
+          "src/checkout.js",
+          "src/server.js",
+          "test/cart.test.js"
+        ]
+      },
+      "index": [
+        "Indexed 7 files (50 lines), 3 imports, 1 tests",
+        "Languages: javascript 4, yaml 1, json 1, markdown 1",
+        "Areas: 4",
+        "Layers: 3 (depth 0 = foundation)",
+        "Wrote .cortex/index/index.json",
+        "Added to .gitignore: .cortex/index/, .cortex/findings/, .cortex/view/"
+      ],
+      "findings": {
+        "counts": {
+          "high": 1,
+          "medium": 1,
+          "low": 3
+        },
+        "items": [
+          {
+            "severity": "high",
+            "title": "No agent context file"
+          },
+          {
+            "severity": "medium",
+            "title": "No CONTEXT.md glossary"
+          },
+          {
+            "severity": "low",
+            "title": "No architecture decision records"
+          },
+          {
+            "severity": "low",
+            "title": "No committed memory store"
+          },
+          {
+            "severity": "low",
+            "title": "Hot spots"
+          }
+        ]
+      },
+      "loop": {
+        "greenfield": false,
+        "served": 0,
+        "total": 8,
+        "stages": [
+          "plan",
+          "design",
+          "build",
+          "test",
+          "deploy",
+          "maintain"
+        ],
+        "rows": [
+          {
+            "id": "intent",
+            "stage": "plan",
+            "status": "missing",
+            "title": "intent/ — the home for the artifact chain",
+            "why": "an idea with no committed home is re-litigated every time it is raised",
+            "needs": [],
+            "paths": [
+              "intent/README.md",
+              "intent/TEMPLATE.md"
+            ]
+          },
+          {
+            "id": "brief",
+            "stage": "build",
+            "status": "missing",
+            "title": "The root brief — what a new joiner would need on day one",
+            "why": "Express — read from package.json",
+            "needs": [],
+            "paths": [
+              "AGENTS.md",
+              "CLAUDE.md",
+              "GEMINI.md"
+            ]
+          },
+          {
+            "id": "team",
+            "stage": "build",
+            "status": "missing",
+            "title": "The agent team — one job per agent, each role picked on its own",
+            "why": "offers: architect, implementer, tester, reviewer — each picked on its own; project-manager waits: nothing to manage yet: no plan folder (intent/, docs/specs/ or docs/plans/)",
+            "needs": [],
+            "paths": [
+              ".claude/agents/",
+              ".claude/hooks/test-paths.sh",
+              ".claude/skills/team/SKILL.md",
+              "CLAUDE.md#Working as a team"
+            ]
+          },
+          {
+            "id": "verification",
+            "stage": "test",
+            "status": "missing",
+            "title": "The verification block — how Claude checks its own work",
+            "why": "test: npm test · lint: npm run lint — detected, so the block can name real commands",
+            "needs": [
+              "a declared build, test or lint command — the block must name real ones"
+            ],
+            "paths": [
+              "CLAUDE.md#Verifying your work"
+            ]
+          },
+          {
+            "id": "verifier",
+            "stage": "test",
+            "status": "missing",
+            "title": "The verifier subagent — a fresh context window that checks the work",
+            "why": "npm test — a verdict from a fresh context is not coloured by the assumptions that produced the code",
+            "needs": [
+              "a declared test or build command"
+            ],
+            "paths": [
+              ".claude/agents/verifier.md"
+            ]
+          },
+          {
+            "id": "evals",
+            "stage": "test",
+            "status": "blocked",
+            "title": "evals/ — regression tests for the agent's own configuration",
+            "why": ".github/workflows is present — CLAUDE.md, skills and hooks steer the agent, so they deserve the regression testing code gets",
+            "needs": [
+              "CLAUDE.md or AGENTS.md — the configuration an eval regresses against"
+            ],
+            "paths": [
+              "evals/",
+              ".github/workflows/agent-evals.yml"
+            ]
+          },
+          {
+            "id": "review",
+            "stage": "deploy",
+            "status": "missing",
+            "title": "REVIEW.md — the review policy every PR is judged against",
+            "why": "1 generated path(s) detected (package-lock.json) — the do-not-report list can name them",
+            "needs": [
+              "code in the repo — there is nothing to write a review policy about yet"
+            ],
+            "paths": [
+              "REVIEW.md"
+            ]
+          },
+          {
+            "id": "hooks",
+            "stage": "deploy",
+            "status": "missing",
+            "title": "Hooks — the deterministic layer behind the advisory ones",
+            "why": "protected paths to block: package-lock.json",
+            "needs": [
+              "a generated path or lockfile to protect, or a declared formatter — without either, both hooks would do nothing"
+            ],
+            "paths": [
+              ".claude/settings.json"
+            ]
+          },
+          {
+            "id": "review-ci",
+            "stage": "deploy",
+            "status": "blocked",
+            "title": "cortex-review.yml — every PR read against the repo's own documents, in CI",
+            "why": ".github/workflows is here, but there is no AGENTS.md yet for a PR to be read against",
+            "needs": [
+              "AGENTS.md — the documents a pull request is reviewed against"
+            ],
+            "paths": [
+              ".github/workflows/cortex-review.yml"
+            ]
+          },
+          {
+            "id": "team-plugin",
+            "stage": "maintain",
+            "status": "missing",
+            "title": "Cortex for the whole team — its marketplace and plugin in the committed settings",
+            "why": ".cortex/connector.json connects this repo to a team brain, so every teammate should run the same Cortex; .claude/settings.json lacks extraKnownMarketplaces.cortex and enabledPlugins.cortex@cortex",
+            "needs": [
+              ".claude/settings.json that parses as JSON — Cortex merges into it and never overwrites it"
+            ],
+            "paths": [
+              ".claude/settings.json"
+            ]
+          },
+          {
+            "id": "bands",
+            "stage": "maintain",
+            "status": "blocked",
+            "title": "bands.yaml — what closes the loop back to intent",
+            "why": "a breach with no review gate has nowhere safe to escalate, so this stays closed for now",
+            "needs": [
+              "REVIEW.md — the gate a 3σ breach escalates into"
+            ],
+            "paths": [
+              "bands.yaml"
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

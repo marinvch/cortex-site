@@ -626,3 +626,187 @@ html, body, #root {
   border: 0;
   background: var(--bg);
 }
+
+/* ── The /cortex run, played step by step (home) ── */
+.run {
+  margin: 0 0 2rem;
+  border: 1px solid var(--border-strong);
+  border-radius: 12px;
+  background: var(--bg-card);
+  overflow: hidden;
+  box-shadow: 0 18px 40px -28px var(--scrim);
+}
+
+.run-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  padding: 0.5rem 0.5rem 0;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-sidebar);
+}
+
+.run-tab {
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 650;
+  color: var(--text-muted);
+  background: transparent;
+  border: 1px solid transparent;
+  border-bottom: none;
+  border-radius: 8px 8px 0 0;
+  padding: 0.5rem 0.9rem;
+  cursor: pointer;
+}
+.run-tab:hover { color: var(--text); }
+.run-tab[aria-selected="true"] {
+  color: var(--accent);
+  background: var(--bg-card);
+  border-color: var(--border);
+  box-shadow: inset 0 3px 0 var(--accent-line);
+}
+
+.run-blurb { margin: 0; padding: 0.85rem 1rem 0; font-size: 1.05rem; color: var(--text-muted); }
+
+.run-panes {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+}
+@media (max-width: 760px) {
+  .run-panes { grid-template-columns: minmax(0, 1fr); }
+}
+
+.run-term, .run-tree {
+  height: 21rem;
+  overflow-y: auto;
+  border-radius: 8px;
+  font-family: var(--mono);
+  font-size: 0.875rem;
+  line-height: 1.55;
+}
+
+.run-term {
+  background: var(--code-bg);
+  border: 1px solid var(--code-border);
+  color: var(--code-text);
+  padding: 0.75rem 0.9rem;
+}
+
+.run-block + .run-block { margin-top: 0.9rem; }
+
+.run-block-title {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--code-keyword);
+  margin-bottom: 0.2rem;
+}
+
+.run-line { white-space: pre-wrap; overflow-wrap: anywhere; }
+.run-cmd { color: var(--code-string); font-weight: 700; }
+.run-cmd::before { content: '> '; color: var(--code-comment); }
+.run-head { color: var(--code-title); font-weight: 700; }
+.run-dim { color: var(--code-comment); }
+.run-ask { color: var(--code-number); font-weight: 700; }
+.run-add { color: var(--code-string); }
+
+.run-new { animation: run-in 0.32s ease-out both; }
+@keyframes run-in {
+  from { opacity: 0; transform: translateY(5px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.run-tree {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 0.75rem 0.9rem;
+}
+
+.run-tree ul { list-style: none; margin: 0; padding: 0; }
+.run-tree li { display: flex; flex-wrap: wrap; gap: 0 0.5rem; padding: 0.05rem 0; }
+.run-tree-title { font-weight: 700; color: var(--accent); margin-bottom: 0.3rem; }
+.run-tree-empty, .run-note { color: var(--text-muted); }
+.run-mark { width: 1ch; flex: none; font-weight: 800; color: var(--text-muted); }
+.run-added { color: var(--ok); font-weight: 700; animation: run-in 0.4s ease-out both; }
+.run-added .run-mark, .run-touched .run-mark { color: var(--ok); }
+.run-waits { margin-top: 0.9rem; padding-top: 0.7rem; border-top: 1px dashed var(--border-strong); }
+
+.run-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0 1rem 0.85rem;
+}
+
+.run-steps { display: flex; flex-wrap: wrap; gap: 0.4rem; list-style: none; margin: 0; padding: 0; flex: 1; }
+
+.run-step {
+  font: inherit;
+  font-size: 0.9375rem;
+  font-weight: 650;
+  color: var(--text-muted);
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.3rem 0.8rem 0.3rem 0.35rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: border-color 0.15s, color 0.15s, background-color 0.15s;
+}
+.run-step:hover { border-color: var(--accent-line); color: var(--text); }
+.run-step[data-done] { color: var(--text); }
+.run-step[aria-current="step"] {
+  color: var(--accent);
+  background: var(--accent-tint);
+  border-color: var(--accent-line);
+}
+
+.run-step-n {
+  display: inline-grid;
+  place-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  font-family: var(--mono);
+  font-size: 0.8125rem;
+  font-weight: 800;
+  background: var(--bg-inline);
+  color: var(--text);
+}
+.run-step[aria-current="step"] .run-step-n { background: var(--accent-fill); color: var(--on-accent); }
+
+.run-replay { padding: 0.35rem 0.9rem; font-size: 0.9375rem; }
+
+.run-foot {
+  margin: 0;
+  padding: 0.7rem 1rem;
+  font-size: 0.9375rem;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border);
+  background: var(--bg-sidebar);
+}
+.run-foot code { font-family: var(--mono); color: var(--inline-code); }
+
+.run-placeholder { height: 30rem; border: 1px solid var(--border); border-radius: 12px; background: var(--bg-card); margin: 0 0 2rem; }
+
+.run-tab:focus-visible, .run-step:focus-visible, .run-term:focus-visible {
+  outline: 2px solid var(--accent-line);
+  outline-offset: 2px;
+}
+
+/* A little more lift on the home page, and none of it for anyone who asked for less motion. */
+.feature-card { transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s; }
+.feature-card:hover { transform: translateY(-2px); box-shadow: 0 12px 24px -18px var(--scrim); }
+
+@media (prefers-reduced-motion: reduce) {
+  .run-new, .run-added { animation: none; }
+  .feature-card, .run-step { transition: none; }
+  .feature-card:hover { transform: none; }
+}
