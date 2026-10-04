@@ -1,4 +1,4 @@
-import { useState, useEffect, type ReactNode } from 'react'
+import { Suspense, lazy, useState, useEffect, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import IconButton from '@mui/material/IconButton'
 import Tooltip from '@mui/material/Tooltip'
@@ -15,6 +15,9 @@ import MemoryOutlinedIcon from '@mui/icons-material/MemoryOutlined'
 import { facts, installBlock, ritual } from '../facts'
 import { InlineMarkdown } from '../components/InlineMarkdown'
 import { REPO_URL, SITE_TITLE } from '../site'
+
+// The walkthrough and its captured data load after the page paints; the docs pages never fetch them.
+const RunDemo = lazy(() => import('../components/RunDemo'))
 
 interface Feature { icon: ReactNode; title: string; desc: string; to: string }
 
@@ -93,6 +96,11 @@ export default function Home() {
           context layer every developer’s agent reads: a small root brief, scoped briefs where they
           are earned, a domain glossary, decisions, and a shared memory committed with the code.
         </p>
+
+        <p className="section-title">One run</p>
+        <Suspense fallback={<div className="run-placeholder" aria-hidden="true" />}>
+          <RunDemo />
+        </Suspense>
 
         <div className="install-box">
           <span className="install-box-label">Install in Claude Code</span>
