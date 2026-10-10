@@ -36,6 +36,12 @@ you have to come back here to look up.
 clobber a curated `AGENTS.md` — which means you would end up with your file *plus* an
 `AGENTS.generated.md` and a merge to do by hand. Slimming first leaves one file.
 
+Once the context layer exists, step 3 no longer names `AGENTS.md`. One case keeps it, as an
+optional row: a `.github/copilot-instructions.md` that still holds rules of its own, where Cortex
+writes a one-line pointer at `AGENTS.md`. Copilot reads that second copy and nobody keeps it true.
+It is an offer, never the first question, and a no is a full answer — a team may keep rules for one
+tool on purpose.
+
 ## Per change
 
 Not a sequence — a lookup:

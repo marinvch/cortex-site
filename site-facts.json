@@ -29,7 +29,7 @@
       "name": "get_project_context"
     },
     {
-      "description": "List projects registered in the brain.",
+      "description": "List projects registered in the brain; in a repo joined to a team-brain, also the team's project files with their repo and links.",
       "modes": [
         "vault"
       ],
@@ -51,7 +51,7 @@
       "name": "recall_memory"
     },
     {
-      "description": "Append a durable note to this repo's committed .cortex/memory/. Refuses anything carrying a credential — memory ships with the code.",
+      "description": "Append a durable note to this repo's committed .cortex/memory/, in the author's own file for the day (<date>/<author>.md). Refuses anything carrying a credential — memory ships with the code. A `notice` in the result means the note went to the shared <date>.md instead: tell the user what it says.",
       "modes": [
         "repo"
       ],
@@ -332,5 +332,5 @@
     }
   ],
   "schema": 1,
-  "version": "2.41.15"
+  "version": "2.41.52"
 }

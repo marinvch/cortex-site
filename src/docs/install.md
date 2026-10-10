@@ -21,6 +21,11 @@ evals, control bands, [an agent team](#/what-lands)), and then **stops and asks 
 Nothing in your repo is modified until you pick what to act on. Indexing and reporting are
 read-only by construction: a different skill applies changes.
 
+The question covers what the repo is missing and, for the optional plugin tiers, only what this
+machine lacks: `/cortex` reads Claude Code's plugin registry first, writing nothing, and a tier
+that is already installed is not offered again. A row that changes more than its files says so
+under its paths, so the one yes covers what you were told.
+
 ## Requirements
 
 | Needs | Why |
@@ -57,7 +62,10 @@ Here updating is not housekeeping. The files `/cortex` stamps are shared through
 `.cortex/stamps.json`, but the plugin is per machine. When that record was written by a newer Cortex
 than yours, `/cortex`, `/cortex-next` and `cortex-stamps.mjs` say so and give you the two commands
 above — and your older plugin refuses to rewrite any file a newer one stamped, because it would put
-its own older template back.
+its own older template back. It does not list those files either, not even as a preview of what
+the update will offer: a file that reads out of date against the older templates may be current
+against the newer ones. Asking it to just update everything gets the same answer — updating the
+plugin is how everything gets updated.
 
 On a team's repo — your profile is `work`, or `/team-add` connected it to a team brain — `/cortex`
 also offers to add Cortex to the repo's committed `.claude/settings.json`: the `cortex` marketplace

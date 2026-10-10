@@ -23,6 +23,9 @@ node index/cortex-shared-plugin.mjs .  # on a team repo: what --write would add 
 Every command prints a `Next →` line when it finishes, and refuses an unknown or misspelled flag
 with a message naming it — a typo is never reinterpreted as a path.
 
+The `ai-os` command — plugin tiers, a team-brain and its project files — is listed on
+[MCP brain](#/mcp), beside the server it shares its code with.
+
 ## Tools — `tools/`
 
 Every script here runs on a stock machine — no `npm install`, no lockfile, no runtime dependency.
@@ -47,12 +50,16 @@ This table is the Cortex README's, copied row for row. In the Cortex repository,
 | `cortex-capability.mjs` | What each ritual needs from the setup running it |
 | `cortex-frontmatter.mjs` | Is every ritual's frontmatter readable by a router; `--check` fails on the first bad line, strictly |
 | `cortex-version.mjs` | `--set X.Y.Z` — stamp the version at all seven sites, refuse without a changelog entry |
+| `cortex-release-notes.mjs` | `X.Y.Z` — that version's section of the changelog, for a release's notes; exit 1 if the section cannot be bounded exactly |
+| `cortex-release-plan.mjs` | `--before <sha>` — what one push to master releases: nothing, a tag that already exists, or a new release and whether it takes Latest. The release workflow acts on it; it creates nothing itself |
 | `cortex-preflight.mjs` | Root, profile and index freshness — what every ritual asks before it writes |
 | `cortex-plugin-check.mjs` | Which Cortex this session is actually running, and whether it is the one you edited |
 | `cortex-skill-graph.mjs` | Which ritual reaches which; `--check` fails on one stranded in both directions |
+| `cortex-skill-links.mjs` | Whether every link from a ritual to a file or a heading resolves; `--check` fails on a dead one |
 | `cortex-skill-usage.mjs` | Which rituals your sessions have actually reached |
 | `cortex-placeholders.mjs` | Did a file Cortex stamped keep a placeholder from its template; exit 1 if so |
-| `cortex-claude-docs.mjs` | Are the Claude Code rules Cortex ships still stated on Anthropic's pages, and has Anthropic published a page Cortex has not seen; `--check` exits 1 on a stale rule, 3 on a new page |
+| `cortex-claude-docs.mjs` | Are the Claude Code rules Cortex ships still stated on Anthropic's pages, and has Anthropic published a page Cortex has not seen (the Claude Code docs, the blog, and three sections of the platform docs); `--check` exits 1 on a stale rule, 3 on a new page |
 | `cortex-site-facts.mjs` | The facts the public site states, read from source; `--check` names each one that drifted |
+| `cortex-site-demo.mjs` | What a `/cortex` run prints on a new repo, a working project and a team's repo, captured for the site's walkthrough |
 | `server/server-setup.sh` | Set up a team brain: the bare repo on a server, a clone on each machine, the cron lines |
 | `server/cortex-cron.sh` | Run by cron on the server: pull the team brain, write a daily digest or weekly audit, push it |
