@@ -45,7 +45,13 @@ notes, rendered markdown with clickable links, your registered codebases, and th
 ## Connect it as a live brain
 
 The vault can be served by the same MCP server in **vault mode**, so `recall` and `capture` become
-real tools in every project on your machine. `/connect-brain` registers it for you.
+real tools in every project on your machine. `/connect-brain` registers it for you, as a server
+named `cortex` with `CORTEX_ROOT` set to your vault's path — the only configuration there is.
+
+A server already registered as `ai-os`, with `AI_OS_ROOT`, keeps working and needs no change: that
+variable is still read, with no warning and no removal date. To move to the new name, remove the
+old registration first. Do not keep both — they are two servers over one vault, and every tool
+appears twice.
 
 ## Keep worlds apart
 

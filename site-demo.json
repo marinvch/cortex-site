@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "version": "2.41.15",
+  "version": "2.41.52",
   "scenarios": [
     {
       "id": "new",
@@ -145,7 +145,7 @@
             "title": "cortex-review.yml — every PR read against the repo's own documents, in CI",
             "why": "no CI detected, and a review that runs only when someone remembers it is the one that gets skipped",
             "needs": [
-              "GitHub Actions — the template is a GitHub workflow",
+              "GitHub Actions — the template is a GitHub workflow, and no remote of this repo is on GitHub",
               "AGENTS.md — the documents a pull request is reviewed against"
             ],
             "paths": [

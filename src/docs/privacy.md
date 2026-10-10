@@ -14,10 +14,11 @@ rather than sanitising it.
 
 - **The indexer, findings, View and every `index/` script** read the repo on disk and write only
   under its `.cortex/` (the first index run also appends three lines to `.gitignore`, after you
-  agree). They make no network calls and install nothing: Cortex has no runtime dependencies. Three
+  agree). They make no network calls and install nothing: Cortex has no runtime dependencies. Four
   things there are meant to be committed: `.cortex/memory/`; `.cortex/stamps.json`, the record of
-  which files Cortex stamped into the repo and from which release; and `.cortex/sections.json`,
-  which `CLAUDE.md` sections your team edited and kept.
+  which files Cortex stamped into the repo and from which release; `.cortex/sections.json`, which
+  `CLAUDE.md` sections your team edited and kept; and `.cortex/agents.json`, what you answered
+  about the agents the repo already had.
 - **Three scripts write outside `.cortex/`**, and `/cortex` runs each only on what you confirmed:
   - `cortex-stamps.mjs update` rewrites only a file Cortex stamped that nobody has touched since,
     and never when `.cortex/stamps.json` names a newer Cortex than the one running. That check
@@ -26,6 +27,8 @@ rather than sanitising it.
     `.claude/settings.json`, creating the file if there is none, and leaves every other key as it
     was. It refuses a file that does not parse as JSON. `--auto-update`, a separate choice, also
     writes `"autoUpdate": true` on a `cortex` entry it adds, and never changes one already there.
+  - `cortex-section.mjs --append CLAUDE.md --from <file>` adds a block to the end of a markdown
+    file in the repo, in that file's own line endings, and changes nothing already in it.
   - `cortex-section.mjs --replace team` rewrites the `## Working as a team` section of `CLAUDE.md`,
     and only when it is an earlier release's text that nobody has changed. Every other line of the
     file stays as it was, and a section your team edited is never replaced.

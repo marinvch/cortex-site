@@ -43,6 +43,12 @@ size and emphasis, skill and subagent frontmatter, hook scripts, direct Messages
 `claude-setup/*` finding cites the documented rule it rests on, or says it is Cortex's own
 threshold, and none ranks above medium: it is advice about your repo, not a failure.
 
+A skill is held to two bars, and the finding says which. A rule from the Claude Code skills page is
+about what Claude Code does with the file. A rule from the platform's skill authoring page — the
+shape of a name, the length of a description, a table of contents at the top of a long reference
+file — is a limit of the Agent Skills format that the API and a claude.ai upload read. Those three
+findings are low, and each says that Claude Code still loads the skill.
+
 A plugin whose `hooks/hooks.json` has a `modules` key is a Claude Code mod, and the report says so.
 It is judged by its files, never by its code: whether `modules` is an array of one path, whether
 that path names a file, and its extension. Which events the module handles and which calls it makes
