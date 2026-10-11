@@ -39,7 +39,8 @@ Offers collapse by action, so one "add a brief" question can cover several findi
 question inherits the severity of its most serious member, so merging never buries a critical one.
 
 The report also judges the repo's Claude setup against Anthropic's own documentation — `CLAUDE.md`
-size and emphasis, skill and subagent frontmatter, hook scripts, direct Messages API calls. Each
+size and emphasis, skill and subagent frontmatter, hook scripts, permission rules in a settings
+file, direct Messages API calls. Each
 `claude-setup/*` finding cites the documented rule it rests on, or says it is Cortex's own
 threshold, and none ranks above medium: it is advice about your repo, not a failure.
 
