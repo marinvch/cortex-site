@@ -35,6 +35,12 @@ critical, high-churn, or holds invariants an agent could violate — and wires i
 table. It proposes candidates from the index, or takes a directory you name; you confirm each one.
 One filename per area, never a sprawl of per-topic files.
 
+Where a test already fails when an invariant breaks, the brief names that test file in the rule.
+The run ends by saying which of the rules it wrote name a test and which name none, read from
+`node index/cortex-review.mjs --rules`. That command lists every rule under an `Invariants`,
+`Gotchas` or `Rules` heading in the repo's briefs. It reports what a rule names, never whether the
+rule holds: a gotcha states a limit no test could pin.
+
 ## The glossary and decisions
 
 `CONTEXT.md` is the repo's **domain glossary**: the words the codebase uses, and what they mean
