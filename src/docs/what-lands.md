@@ -158,7 +158,9 @@ Only once you answer "team" does the session load the `team` skill:
 2. The Tester and the Reviewer object. An objection with no `path:line`, ADR or test behind it is
    dropped, and the session says how many it dropped.
 3. The Architect accepts or rebuts each remaining objection, with a citation.
-4. After at most two rounds, whatever is still open comes to you side by side, and you decide.
+4. After at most two rounds, whatever is still open comes to you side by side, and you decide. Two
+   is the default. Ask `/cortex` for another limit, from one to five, and it is written into the
+   `team` skill and kept on later updates.
 5. Then comes a failing test, the change, and an independent review.
 
 The session passes work between the agents and edits nothing itself: a change the review calls for
