@@ -67,14 +67,8 @@
       "when": "per risky feature"
     },
     {
-      "does": "read-only four-layer health score + top gaps",
-      "invocation": "model",
-      "name": "audit",
-      "when": "weekly"
-    },
-    {
       "does": "one-line drop to `inbox/` or today's daily note",
-      "invocation": "model",
+      "invocation": "user",
       "name": "capture",
       "when": "anytime"
     },
@@ -85,7 +79,7 @@
       "when": "after time away"
     },
     {
-      "does": "register `mcp/server.js` at user scope for recall/capture",
+      "does": "install the Cortex Core plugin bundle, and register `mcp/server.js` at user scope for recall/capture",
       "invocation": "user",
       "name": "connect-brain",
       "when": "once per machine"
@@ -97,7 +91,7 @@
       "when": "**per repo — start here**"
     },
     {
-      "does": "find + fix orphans, dead links, stale/duplicate/misplaced files, privacy leaks",
+      "does": "vault health: find + fix orphans, dead links, misplaced files, privacy leaks; `score` for the read-only four-layer score, `graph` to rebuild the navigator",
       "invocation": "model",
       "name": "cortex-audit",
       "when": "periodic"
@@ -164,7 +158,7 @@
     },
     {
       "does": "open today's note; surface priorities + due items",
-      "invocation": "model",
+      "invocation": "user",
       "name": "daily",
       "when": "each day"
     },
@@ -205,14 +199,8 @@
       "when": "on request"
     },
     {
-      "does": "stamp a codebase brain into a repo — stays in that repo",
-      "invocation": "model",
-      "name": "install-project",
-      "when": "per repo"
-    },
-    {
       "does": "Notice→Decide→Build interview; ship one artifact",
-      "invocation": "model",
+      "invocation": "user",
       "name": "level-up",
       "when": "biweekly"
     },
@@ -247,12 +235,6 @@
       "when": "a skill edit had no effect"
     },
     {
-      "does": "regenerate the navigator graph, nominate MOCs, fix dead links",
-      "invocation": "model",
-      "name": "reindex",
-      "when": "periodic"
-    },
-    {
       "does": "resolve a stuck merge/rebase by intent, hunk by hunk. Never `--abort`",
       "invocation": "model",
       "name": "resolving-merge-conflicts",
@@ -266,15 +248,9 @@
     },
     {
       "does": "register personal repos into `projects/` — metadata only",
-      "invocation": "model",
+      "invocation": "user",
       "name": "scan-projects",
       "when": "anytime"
-    },
-    {
-      "does": "install the Cortex Core plugin bundle",
-      "invocation": "model",
-      "name": "setup-plugins",
-      "when": "per machine"
     },
     {
       "does": "judge it against the repo's docs, one PR at a time, merge in an order that strands nothing",
@@ -295,12 +271,6 @@
       "when": "when the collection has grown"
     },
     {
-      "does": "write a new `skills/<name>/SKILL.md` and wire it in",
-      "invocation": "model",
-      "name": "skill-creator",
-      "when": "on request"
-    },
-    {
       "does": "clone the team-brain; drop `.cortex/connector.json`",
       "invocation": "model",
       "name": "team-add",
@@ -314,23 +284,23 @@
     },
     {
       "does": "empty `inbox/`, update `projects/`, restamp `current-focus`",
-      "invocation": "model",
+      "invocation": "user",
       "name": "weekly-review",
       "when": "weekly"
     },
     {
       "does": "generate a script that walks a *human* through steps only they can do",
-      "invocation": "model",
+      "invocation": "user",
       "name": "wizard",
       "when": "on request"
     },
     {
-      "does": "the authoring discipline behind every file Cortex writes",
+      "does": "the authoring discipline behind every file Cortex writes, and the steps that create and wire a new `skills/<name>/SKILL.md`",
       "invocation": "model",
       "name": "writing-for-agents",
-      "when": "writing any agent-facing doc"
+      "when": "writing any agent-facing doc, or a new skill"
     }
   ],
   "schema": 1,
-  "version": "2.41.60"
+  "version": "2.43.1"
 }

@@ -72,5 +72,6 @@ grounded in one repo's commands and briefs. Your own session runs the team from 
 `CLAUDE.md`, which keeps Claude Code's system prompt intact and keeps you in the loop, both at the
 one-agent-or-team choice and at every open disagreement. Debate is bounded and evidence-only: every
 objection cites a `path:line`, an ADR or a test, and after two rounds what is still open comes to
-you. Agreement between models is not evidence. Claude Code's experimental agent teams can run the
+you. Two is the default, and a team can set the limit from one to five. Agreement between models is
+not evidence. Claude Code's experimental agent teams can run the
 same agents, and Cortex never turns them on. *(ADR 0019)*

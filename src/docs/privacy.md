@@ -72,5 +72,5 @@ that repo.
 ## Enforced, not just written
 
 The rituals refuse the write: `/capture` and `/daily` decline material from the wrong world,
-`/audit` and `/cortex-audit` treat a breach as a critical finding, and `/scan-projects` skips repos
+`/cortex-audit` treats a breach as a critical finding, and `/scan-projects` skips repos
 under a work directory. `/cortex-profile` shows or sets which world this install serves.
