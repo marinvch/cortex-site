@@ -20,6 +20,8 @@ rather than sanitising it.
   `CLAUDE.md` sections your team edited and kept; and `.cortex/agents.json`, what you answered
   about the agents the repo already had.
 - **Three scripts write outside `.cortex/`**, and `/cortex` runs each only on what you confirmed:
+  - `cortex-stamps.mjs stamp` writes one file you confirmed, from a template, and records it. It
+    refuses to write over a file it did not record, or one edited since, unless you said to.
   - `cortex-stamps.mjs update` rewrites only a file Cortex stamped that nobody has touched since,
     and never when `.cortex/stamps.json` names a newer Cortex than the one running. That check
     compares the record with the plugin's own version file; nothing is fetched to make it.
