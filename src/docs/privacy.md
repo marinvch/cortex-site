@@ -47,6 +47,11 @@ rather than sanitising it.
   instance or its Jira site — with the credential from your environment, and never on the `lab`
   profile. The note passes the secret gate before it is written, and the `home` / `work` profile
   decides which captures may leave the machine.
+- **On a server you run, `tools/server/cortex-cron.sh`** pulls the team brain, writes a daily
+  digest or weekly audit, and pushes it. With `ANTHROPIC_API_KEY` set it also sends the day's
+  changes to the Anthropic API for a summary. Both the changes and the digest pass
+  `tools/cortex-scrub.mjs` first, and a finding stops the run with nothing sent or pushed. Without
+  a key, or without the scrubber, it calls no API and writes a plain digest from git.
 - **The rituals** are instructions Claude follows. Each says so before a step that touches the
   network — `gh` for pull requests, `git clone` of a public repo you name — so the step runs only
   when you ask for it.
