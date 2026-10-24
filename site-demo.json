@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "version": "2.44.0",
+  "version": "2.45.0",
   "scenarios": [
     {
       "id": "new",
@@ -204,6 +204,7 @@
         "Languages: javascript 4, yaml 1, json 1, markdown 1",
         "Areas: 4",
         "Layers: 3 (depth 0 = foundation)",
+        "Routes: 0 calls, 0 gateway routes, 1 handlers — resolve them with node index/cortex-routes.mjs",
         "Wrote .cortex/index/index.json",
         "Created .cortex/ — generated artifacts live here; .cortex/memory/ is committed on purpose.",
         "Added to .gitignore: .cortex/index/, .cortex/findings/, .cortex/view/"
@@ -407,6 +408,7 @@
         "Languages: javascript 4, yaml 1, json 1, markdown 1",
         "Areas: 4",
         "Layers: 3 (depth 0 = foundation)",
+        "Routes: 0 calls, 0 gateway routes, 1 handlers — resolve them with node index/cortex-routes.mjs",
         "Wrote .cortex/index/index.json",
         "Added to .gitignore: .cortex/index/, .cortex/findings/, .cortex/view/"
       ],
