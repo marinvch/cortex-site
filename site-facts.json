@@ -8,6 +8,22 @@
   },
   "mcpTools": [
     {
+      "description": "Reply to an ask by id and set its status (answered by default; decided or wontfix). The asker's next `inbox` shows it. Commits and pushes.",
+      "modes": [
+        "repo",
+        "vault"
+      ],
+      "name": "answer"
+    },
+    {
+      "description": "Send a question to a role (backend, architect…) or a project in the team-brain; the member who holds it sees it in their `inbox`. Commits and pushes `asks/<id>.md`. A `to` nobody holds is refused with the roles and projects that exist.",
+      "modes": [
+        "repo",
+        "vault"
+      ],
+      "name": "ask"
+    },
+    {
       "description": "Append an explicit note to the vault; returns the path. In a repo connected to a team-brain this writes there automatically (one-file-per-note, auto commit+push).",
       "modes": [
         "vault"
@@ -22,11 +38,27 @@
       "name": "catch_me_up"
     },
     {
+      "description": "The API contracts the team's repos publish to the team-brain. With `project`: what it serves (method, path, operation id, response schema), calls and emits — narrow with `path`. With `calls`: which projects call an endpoint (\"/items\", \"GET /items/{id}\") and which serve it. With neither: the projects that have published one. Pulls first; every list is a floor.",
+      "modes": [
+        "repo",
+        "vault"
+      ],
+      "name": "contract"
+    },
+    {
       "description": "Return a project's brief/notes.",
       "modes": [
         "vault"
       ],
       "name": "get_project_context"
+    },
+    {
+      "description": "Open asks addressed to your roles or projects, and the answers to asks you sent. Pulls the team-brain first. Call it at the start of a task.",
+      "modes": [
+        "repo",
+        "vault"
+      ],
+      "name": "inbox"
     },
     {
       "description": "List projects registered in the brain; in a repo joined to a team-brain, also the team's project files with their repo and links.",
@@ -302,5 +334,5 @@
     }
   ],
   "schema": 1,
-  "version": "2.44.0"
+  "version": "2.45.0"
 }
