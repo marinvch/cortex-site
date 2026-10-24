@@ -28,6 +28,18 @@ checkouts — front-end call → gateway route → handler, each as `repo/file:l
 nothing. An endpoint no call reaches is worth checking, never safe to delete: a URL built at
 runtime is counted as unread, not guessed.
 
+Handlers are read from Spring, Express-style routers, NestJS (with a literal global prefix), and
+FastAPI and Flask decorators; calls from front-end code and from Python's `requests`, `httpx` or a
+client object. A router mounted under a prefix in another file (`app.use("/api", router)`) is not
+followed, so its paths lack the prefix — a floor, stated.
+
+**The contract.** `node index/cortex-contract.mjs .` writes what a repo publishes to a team-brain:
+the endpoints it `serves` — from an OpenAPI or Swagger file when there is one, else from the route
+map's handlers — the `calls` it makes, the `events` it publishes or consumes, and what it could not
+read, in `unread`. It reads the route map and never detects routes itself, so the two cannot
+disagree. It holds no code, no line numbers and no query strings, so an unrelated edit is not a
+contract change, and it never writes into a team-brain itself: the `ai-os` command publishes it.
+
 ## Findings
 
 The single ranked markdown report at `.cortex/findings/<date>.md` — issues, gaps and

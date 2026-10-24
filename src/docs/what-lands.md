@@ -28,6 +28,9 @@ intent/               where a change starts: intent → spec → plan
 Nothing above appears until you choose it. `/cortex` and `/cortex-install` index and report
 read-only, then ask; `/cortex-scaffold` is the separate step that writes.
 
+The files Cortex stamps into your repository are yours: they are granted to you under MIT-0, so no
+attribution and no notice is required, and Cortex adds no licence header to them.
+
 ## Why memory is committed
 
 Cortex needs somewhere to keep what a team learns about a codebase — decisions, drift, the gotcha
@@ -177,9 +180,11 @@ has limits:
   and a `-p` session never counts as trusted. The Tester still runs, unfenced.
 - **Bash.** The Tester needs Bash to run tests, and a shell command can write any file. Writing only
   through Edit and Write is an instruction to it, not a guard.
-- **An installed mod.** A Claude Code mod that approves tool calls can approve an edit the hook
-  blocked, because the hook is not in managed settings. The same holds for the loop's
-  `protected-paths.sh`. An organisation stops it with `allowManagedModsOnly`; a repo cannot.
+- **An installed mod.** A `PreToolUse` hook wins over a Claude Code mod only when the built-in mod
+  guard loads, which needs managed settings or a Team or Enterprise login. On a personal API-key
+  login nothing says it does, so a mod that approves tool calls may approve an edit the hook
+  blocked. The same holds for the loop's `protected-paths.sh`. An organisation stops it with
+  `allowManagedModsOnly`; a repo cannot.
 - **Teammates.** A Tester spawned as an agent-teams teammate is not documented to carry the hook.
 - **Windows without Git Bash.** Claude Code then runs hooks in PowerShell, and whether a failure
   there still refuses the edit depends on its version. Treat Git Bash as required.

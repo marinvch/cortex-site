@@ -22,8 +22,10 @@ Memory is **authored, not derived** — it is never regenerated, and it is not a
 ## The gate
 
 Every write to memory, and every tool that publishes, goes through **the gate**: a check that
-**refuses** anything carrying a credential rather than sanitising it, because silently rewriting
-someone's note is a worse failure than declining it with a reason.
+**refuses** rather than sanitises, because silently rewriting someone's note is a worse failure
+than declining it with a reason. It makes three checks in one call: a credential, always; a match
+against your **employer denylist** on a `home` profile; and **personal data**, refused or only
+warned about as `CORTEX_PII` says — see [Privacy](#/privacy).
 
 ## The rituals that move context across a gap
 
@@ -43,8 +45,10 @@ Running `/handoff` alone on a day that taught you something parks the work and l
 For knowledge that spans several repositories, a team lead runs `/team-init` once to create a
 shared private **team-brain** repository. Each developer runs `/team-add` inside a product repo to
 connect it: the team-brain is cloned locally, the repo's **project file** is written there, and a
-generic connector — the team, the project and the team-brain's URL, nothing else — is dropped into
-the product repo, so notes captured there reach the whole team.
+generic connector — the team, the project and the team-brain's URL, plus the team's Cortex fork
+when the brain names one, nothing else — is dropped into the product repo, so notes captured there
+reach the whole team. If your organisation runs Cortex from its own fork, `/team-init --source`
+records it once and every `/team-add` passes it on.
 
 A project file is `projects/<slug>.md` at the top of the team-brain: the project's title and its
 repo, and optionally a tracker, a design file, a docs site and the projects it relates to. It is
@@ -61,9 +65,30 @@ and nothing more — adding a project is adding a file, and removing one is dele
   deleted, and other project files that still name it are reported, not edited.
 
 In a connected repo, `/catch-me-up` pulls the team-brain first (fast-forward only) and returns
-what every repo of the team captured since the date, alongside the local notes. If the pull fails
-it says so, rather than reporting a quiet week from a stale clone. A memory entry is attributed to
-its author only when its file names one; an older day file's entries are attributed to nobody.
+what every repo of the team captured since the date, and which contracts changed, alongside the
+local notes. If the pull fails it says so, rather than reporting a quiet week from a stale clone. A
+memory entry is attributed to its author only when its file names one; an older day file's entries
+are attributed to nobody.
+
+### Roles, asks and contracts
+
+The team-brain carries work between people, not just notes.
+
+- **Roles.** `/team-add` asks each member which roles they hold — `frontend`, `backend`,
+  `architect`, whatever the team uses — and which projects they own, and writes them to the
+  brain's `team.json`. A member's handle is their memory author name. Without this step, asks sent
+  to their role never reach them.
+- **Asks.** The `ask`, `inbox` and `answer` tools carry a question to a role or a project in another
+  repo, and the answer back. An agent calls `inbox` at the start of a task.
+- **Contracts.** `/team-add` offers to publish the repo's contract — what it serves, calls and
+  emits — so another repo can ask who calls an endpoint without cloning this one. Run it again
+  after the API changes. The `contract` tool answers who serves and who calls an endpoint.
+- **Trackers.** `/team-init` asks which trackers the team plans in — GitHub issues, ServiceNow
+  Agile, Jira, or none — and asks are then synced there both ways. A credential never goes in a
+  flag or in `team.json`: each tracker reads its own from the environment. The scheduled sync
+  workflow is printed, and committed only once you have read it and said yes.
+
+How each works is on [MCP brain](#/mcp).
 
 ## Recall from any agent
 
