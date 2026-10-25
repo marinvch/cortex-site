@@ -80,11 +80,53 @@ Code refreshes the marketplace and updates Cortex in the background after startu
 comes before each teammate's own `/plugin` toggle, so Cortex writes the key only on a `cortex` entry
 it is adding — an entry already in the file keeps its `autoUpdate`, whether `true`, `false` or unset.
 
+### Running from your organisation's fork
+
+Many organisations allow plugins only from a repository they host and review. Fork or mirror Cortex
+into your organisation, then tell Cortex where it comes from: a GitHub `owner/repo`, a git URL
+(`https://`, `ssh://` or `git@host:path`), or an absolute path to a local marketplace. Cortex
+refuses a URL carrying a password or a token.
+
+- **For a team:** `/team-init --source acme/cortex` writes it to `team.json` in the team-brain.
+  Every `/team-add` copies it into that repo's `.cortex/connector.json`, so members pass no flag.
+- **For one machine or one run:** set `CORTEX_SOURCE=acme/cortex`, or pass
+  `cortex-shared-plugin.mjs . --write --source acme/cortex`.
+
+The order is `--source`, then `CORTEX_SOURCE`, then the connector, then `marinvch/Cortex`. With none
+set, everything Cortex writes is what it always was. The source decides two things: the `cortex`
+entry `/cortex` adds to `.claude/settings.json` points at your fork, and a stamped
+`cortex-review.yml` clones your fork at the release tag that stamped it, with `.cortex/stamps.json`
+recording that URL. A `cortex` entry already in the file is left as it is, whichever source it
+names. A CI runner cannot clone a local path, so on a directory source `/cortex` does not stamp the
+workflow.
+
+To take an upstream release, bring its tag into the fork — the CI clone needs the tag, and the
+marketplace reads your default branch:
+
+```bash
+git remote add upstream https://github.com/marinvch/Cortex.git   # once
+git fetch upstream --tags
+git merge vX.Y.Z                     # the release tag, after your review
+git push origin HEAD vX.Y.Z
+```
+
+`autoUpdate` follows the fork, not upstream: teammates get a release when you push it, never
+before. The stamp record's "older plugin" check compares against the `VERSION` of the plugin that
+is running, which is your fork's.
+
 ## Other agents
 
 Cortex's output is plain markdown. `CLAUDE.md` and `GEMINI.md` are one-line shims pointing at the
 same root `AGENTS.md`, and the rituals are plain `SKILL.md` files — name one to any AI tool and it
 can follow it.
+
+The live brain works the same from Copilot, Gemini CLI and Codex.
+`node tools/cortex-setup.mjs --agents copilot,gemini,codex` prints where it would register the
+Cortex MCP server in each agent's own config — `.vscode/mcp.json` and `.gemini/settings.json` at
+project scope, to commit once; `~/.codex/config.toml` at user scope, because Codex expands no
+variables — and writes only with `--write`. Claude Code needs nothing: the plugin starts the
+server. It never replaces an existing `cortex` entry, and it also adds
+`.github/copilot-instructions.md` and the `GEMINI.md` shim when they are missing.
 
 ## Next
 
