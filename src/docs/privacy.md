@@ -19,7 +19,13 @@ rather than sanitising it.
   which files Cortex stamped into the repo and from which release; `.cortex/sections.json`, which
   `CLAUDE.md` sections your team edited and kept; and `.cortex/agents.json`, what you answered
   about the agents the repo already had.
-- **Three scripts write outside `.cortex/`**, and `/cortex` runs each only on what you confirmed:
+- **`node tools/cortex-parsers.mjs install` is the one Cortex command that downloads code**, and
+  only when you run it. It fetches the parser packages pinned in `index/parsers.lock.json` from
+  registry.npmjs.org (or the mirror you name), refuses any tarball whose sha512 differs from the
+  lock, and writes only under `~/.cortex/parsers/`. On `work` the registry must be an approved
+  destination. Indexing never fetches anything, with the add-on or without it.
+  [ADR 0029](https://github.com/marinvch/Cortex/blob/master/docs/adr/0029-code-parsers-are-an-add-on-the-user-installs.md).
+- **Three scripts write outside `.cortex/`**, and `/setup-repo` runs each only on what you confirmed:
   - `cortex-stamps.mjs stamp` writes one file you confirmed, from a template, and records it. It
     refuses to write over a file it did not record, or one edited since, unless you said to.
   - `cortex-stamps.mjs update` rewrites only a file Cortex stamped that nobody has touched since,
@@ -38,7 +44,7 @@ rather than sanitising it.
   auto-update turned on, Claude Code fetches the marketplace itself; the manual update is the two
   `claude plugin` commands on [Installation](#/install).
 - **The MCP server** runs `git` and nothing else that reaches a network, and only against a
-  **team-brain** repository you set up with `/team-init` or `/team-add`. It clones that repository
+  **team-brain** repository you set up with `/create-team` or `/join-team`. It clones that repository
   once, pulls it before a catch-up and an `inbox`, and on a team `capture`, `ask` and `answer`
   commit and push there. In a product repo the clone is `.cortex/team/<team>/`, and Cortex adds
   that directory to the repo's `.gitignore` before it clones. With no team brain connected it makes
@@ -47,15 +53,21 @@ rather than sanitising it.
   instance or its Jira site — with the credential from your environment, and never on the `lab`
   profile. The note passes the secret gate before it is written, and the `home` / `work` profile
   decides which captures may leave the machine.
+- **On a `work` profile, every one of those calls goes only to an approved destination.** Each
+  push, pull, clone and tracker request is checked first against `~/.cortex/allowed-destinations`
+  (or the file in `CORTEX_DESTINATIONS`). See "Approved destinations on work" below.
 - **On a server you run, `tools/server/cortex-cron.sh`** pulls the team brain, writes a daily
   digest or weekly audit, and pushes it. With `ANTHROPIC_API_KEY` set it also sends the day's
   changes to the Anthropic API for a summary. Both the changes and the digest pass
   `tools/cortex-scrub.mjs` first, and a finding stops the run with nothing sent or pushed. Without
-  a key, or without the scrubber, it calls no API and writes a plain digest from git.
+  a key, or without the scrubber, it calls no API and writes a plain digest from git. On `work` it
+  also checks the API URL and the brain's remote: an unapproved API means a plain digest, and an
+  unapproved remote means the digest is committed locally and not pushed. Without the checker, a
+  `work` or `lab` server sends nothing.
 - **The rituals** are instructions Claude follows. Each says so before a step that touches the
   network — `gh` for pull requests, `git clone` of a public repo you name — so the step runs only
   when you ask for it.
-- **Stamped into your repo, not run by the plugin.** `/cortex` can write GitHub Actions workflows:
+- **Stamped into your repo, not run by the plugin.** `/setup-repo` can write GitHub Actions workflows:
   `cortex-review.yml` clones the Cortex repository, or your fork when a source is set, at a pinned
   release tag inside your CI to review each PR, and refuses to run it unless its code matches the
   digest recorded when the file was stamped, so a moved tag cannot change what runs
@@ -77,7 +89,8 @@ A **profile** declares which world an install belongs to: `home`, `work` or `lab
 - A **`home`** install holds personal projects and knowledge only — never employer or client
   names, day-job tickets, colleagues, or internal architecture. Even role-level detail counts: the
   aggregate is the leak.
-- A **`work`** install is the same rule from the other side.
+- A **`work`** install is the same rule from the other side, and nothing it holds leaves the
+  machine except to a destination your company approved (see the last section).
 - A **`lab`** install refuses nothing and publishes nothing — one decision, stored as one policy,
   so the firewall cannot be switched off while still leaking.
 
@@ -86,9 +99,9 @@ that repo.
 
 ## Enforced, not just written
 
-The rituals refuse the write: `/capture` and `/daily` decline material from the wrong world,
-`/cortex-audit` treats a breach as a critical finding, and `/scan-projects` skips repos
-under a work directory. `/cortex-profile` shows or sets which world this install serves.
+The rituals refuse the write: `/quick-note` and `/daily-plan` decline material from the wrong world,
+`/audit-notes` treats a breach as a critical finding, and `/register-projects` skips repos
+under a work directory. `/set-profile` shows or sets which world this install serves.
 
 **What code enforces on `home`, and what is still a floor.** Code refuses a published write —
 `capture`, `remember`, `ask`, `answer`, a project file, a contract — whose text matches a line of
@@ -101,8 +114,37 @@ passes the code, and only the rituals' judgment stops it.
 [ADR 0026](https://github.com/marinvch/Cortex/blob/master/docs/adr/0026-the-employer-firewall-checks-the-names-you-give-it.md).
 
 **Personal data.** The same gate looks for email addresses, phone numbers, IBANs and card numbers
-in anything it publishes. By default it warns and writes (`CORTEX_PII=warn`); `CORTEX_PII=refuse`
-refuses, `off` stops the scan. Committed memory is append-only, so removing personal data later
+in anything it publishes. On `home` and `lab` it warns and writes; on `work` it refuses. Set
+`CORTEX_PII` to `warn`, `refuse` or `off` to override the profile. Committed memory is append-only, so removing personal data later
 means rewriting git history and replacing every clone — [`docs/erasure.md`](https://github.com/marinvch/Cortex/blob/master/docs/erasure.md)
 has the procedure — and `CORTEX_AUTHOR=<pseudonym>` keeps your real name out of memory paths.
 [ADR 0027](https://github.com/marinvch/Cortex/blob/master/docs/adr/0027-personal-data-in-committed-memory-is-warned-about-and-erasable.md).
+
+## Approved destinations on work
+
+On a `work` profile, company material leaves the machine only for a destination your company
+approved. The list is a file outside every repository, so IT can deploy it:
+`~/.cortex/allowed-destinations`, or the path in `CORTEX_DESTINATIONS`. One line per destination:
+
+```
+# approved by IT. git: a host, optionally with an owner or group; https: a tracker or an API
+git: github.com/your-org
+git: gitlab.your-org.internal
+https: your-org.service-now.com
+https: api.github.com
+https: api.anthropic.com
+npm: registry.npmjs.org
+```
+
+- Every push, pull, clone and tracker request checks it first. A host matches exactly, never by
+  suffix, and an owner matches whole path segments, so `github.com/your-org` does not approve
+  `github.com/your-org-evil`.
+- **No list means nothing is approved.** An existing work install stops pushing until the file
+  exists; captures and asks are still committed locally, and the result says why they were not
+  pushed. `node tools/cortex-destinations.mjs status` and `tools/cortex-preflight.mjs` say how to
+  fix it.
+- Paths on this machine and `localhost` are always allowed. `home` allows any destination, and
+  `lab` sends nothing anywhere.
+- `node tools/cortex-destinations.mjs check git <url>` tells you whether a remote would be allowed.
+
+[ADR 0030](https://github.com/marinvch/Cortex/blob/master/docs/adr/0030-on-a-work-profile-nothing-leaves-except-to-an-approved-destination.md).

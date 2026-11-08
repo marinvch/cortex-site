@@ -44,7 +44,7 @@ configs people already have.
 | `ai-os setup-plugins --status` | per tier, which plugins are installed; `--json`, `--tier`, `--plugins-dir`. Read-only | nothing |
 | `ai-os team init` | seed and push a team-brain | a vault |
 | `ai-os team add` | write this repo's project file into the team-brain, then the connector | a vault |
-| `ai-os team member` | add or update one member (`--handle`, `--roles`, `--projects`) in the brain's `team.json`; commit, push | a root, a team |
+| `ai-os team member` | add or update one member (`--handle`, `--roles`, `--projects`, `--job`) in the brain's `team.json`; commit, push | a root, a team |
 | `ai-os ask` | send `--to <role\|project> --title --body` as `asks/<id>.md`; commit, push | a root, a team |
 | `ai-os inbox` | pull, then the open asks for you and the answers to yours; `--json` | a root, a team |
 | `ai-os answer` | append `--body` to ask `--id`, set `--status`; commit, push | a root, a team |
@@ -52,11 +52,15 @@ configs people already have.
 | `ai-os contract show` | one project's contract (`--project`, `--path`); `--json` | a root, a team |
 | `ai-os contract who-calls` | which projects call `--path "[METHOD] /p"`, and which serve it; `--json` | a root, a team |
 | `ai-os contract list` | the projects that have published a contract | a root, a team |
-| `ai-os integrations list\|add\|remove\|workflow` | the trackers in `team.json`; `workflow --write` commits the scheduled sync | a root, a team |
+| `ai-os stories publish` | write `--file <stories.json>`, this repo's story links, as `projects/<slug>/stories.json`; commit, push when changed | a root, a team |
+| `ai-os integrations list\|add\|remove\|workflow` | the trackers in `team.json`; `add --stories` also mirrors that tracker's epics and stories; `workflow --write` commits the scheduled sync | a root, a team |
 | `ai-os sync` | asks ↔ trackers, one commit per run; `--dry-run`, `--status`, `--clone <checkout>` | a root, a team |
 | `ai-os project list` | every project the brain knows, as JSON | a vault |
 | `ai-os project check` | validate the team's project files; exit 1 on an error or a withheld file | a vault, a team |
 | `ai-os project remove` | delete one project file with `git rm`, commit, push | a vault, a team |
+| `ai-os graph stats\|node\|neighbors\|cluster\|hubs\|bridges\|path` | this repo's import graph, from its Cortex index; writes nothing | an index |
+| `ai-os graph callers\|callees\|defines` | its functions and calls; writes nothing | an index, the parser add-on |
+| `ai-os graph story\|stories-for\|risk` | the team's stories, traced to code through the team-brain | a root, a team |
 | `ai-os digest` | append a git digest to a file | nothing |
 | `ai-os catch-up` | notes and history since a date | a repo or a vault |
 
@@ -69,7 +73,7 @@ command.
 ## Asks and contracts, on a team
 
 `ask`, `inbox`, `answer` and `contract` work in repo and vault mode alike, and need a brain joined
-to a team; on a solo brain they refuse and name `/team-add`. An ask is one file per thread,
+to a team; on a solo brain they refuse and name `/join-team`. An ask is one file per thread,
 `asks/<id>.md`, in the team-brain. Its `to` must be a role some member holds or a project the brain
 knows, or it is refused with both lists. Your handle is your memory author name, and a caller not
 in the roster still sees the asks for the repo they are in. In a product repo the team-brain is
@@ -92,6 +96,22 @@ idempotent — the link is written before an item is created, and the tracker is
 ask's marker first — so a retry makes no duplicate. The primary tracker wins on status, the brain on
 the text. No MCP tool configures a tracker.
 
+## The code graph, as a tool
+
+The `graph` tool, and `ai-os graph` for an agent without MCP, answer questions about a repo's
+structure from its stored index: `stats`, `node`, `neighbors`, `cluster`, `hubs`, `bridges` and
+`path` over the import graph, and `callers`, `callees` and `defines` over functions and calls when
+the [parser add-on](#/index-and-findings) is installed. Both refuse a missing or stale index and
+name the command that rebuilds it, and without the add-on the call ops print its install command
+rather than answering "no callers". A count of callers is a floor of extracted calls.
+
+On a team, `story`, `stories-for` and `risk` read the team-brain. A tracker the team turned on with
+`--stories` has its epics and stories mirrored to `stories/<key>.md` on each full sync — key,
+title, status, epic, assignee and link, never the description. Each repo publishes which code each
+ticket key touched with `ai-os stories publish`: commits, then files, each with its cluster, whether
+it is a hub and whether a test covers it. `risk` names the stories whose code no test covers. A
+story's code is a floor: a commit that names no key is invisible to it.
+
 ## Safety that belongs to the tool, not the caller
 
 - **A tool that returns someone else's text says so.** Recalled memory was written outside the
@@ -107,6 +127,9 @@ the text. No MCP tool configures a tracker.
   a tracker and every comment pulled back passes the gate; a comment carrying a credential is
   withheld, and the brain records only that it was. `team.json` refuses a credential — the
   adapters read it from the environment only.
+- **On `work`, nothing leaves except to an approved destination.** Every push, pull, clone and
+  tracker request is checked against the company's list before it starts; a refused push keeps the
+  local commit and says why. See [Privacy](#/privacy).
 - **Results are capped.** Every tool result is held to a size an agent can read in full; an
   oversized result comes back marked `truncated` with a hint to ask for less, instead of being cut
   silently.

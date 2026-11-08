@@ -1,6 +1,6 @@
 # CLI reference
 
-The rituals are the interface — `/cortex`, `/cortex-next` and the rest. Underneath, every step is a
+The rituals are the interface — `/setup-repo`, `/resume-work` and the rest. Underneath, every step is a
 plain Node or shell script you can run yourself from a clone of the Cortex repository. Inside a
 skill the same scripts run through the plugin's own path.
 
@@ -11,13 +11,15 @@ node index/cortex-next.mjs .        # where this repo is; writes nothing at all
 node index/cortex-index.mjs .       # writes .cortex/index/index.json
 node index/cortex-findings.mjs .    # writes .cortex/findings/<date>.md
 node index/cortex-view.mjs .        # writes .cortex/view/repo.html and opens it
+node index/cortex-graph.mjs .       # hubs, bridges between clusters, cycles, untested clusters; writes nothing
 node index/cortex-enrich.mjs plan . # optional: plan the semantic enrichment pass
 node index/cortex-routes.mjs . --workspace  # which back-end handler serves each front-end call
 node index/cortex-contract.mjs .   # what this repo serves, calls and emits, as JSON; writes nothing without --out
-node index/cortex-stamps.mjs .     # which files /cortex stamped are out of date; writes nothing
+node index/cortex-stamps.mjs .     # which files /setup-repo stamped are out of date; writes nothing
 node index/cortex-section.mjs .    # whether CLAUDE.md's team section is an older release's text; writes nothing
 node index/cortex-loop.mjs . --team architect,tester  # the team files, values and roster for those picks; writes nothing
 node index/cortex-impact.mjs src/a.ts --size  # one agent or the team for a task on these files, and why
+node index/cortex-impact.mjs --symbol src/cart.ts#total  # who calls a function (parser add-on)
 node index/cortex-shared-plugin.mjs .  # on a team repo: what --write would add to .claude/settings.json
 ```
 
@@ -55,7 +57,10 @@ This table is the Cortex README's, copied row for row. In the Cortex repository,
 | `cortex-release-plan.mjs` | `--before <sha>` — what one push to master releases: nothing, a tag that already exists, or a new release and whether it takes Latest. The release workflow acts on it; it creates nothing itself |
 | `cortex-preflight.mjs` | Root, profile, employer denylist and index freshness — what every ritual asks before it writes |
 | `cortex-scrub.mjs` | The publish gate for shell scripts: credentials, the employer denylist on `home`, personal data; `--check` exits 2 on a refusal and names only kinds |
+| `cortex-destinations.mjs` | Where this install may send things: `status` shows the profile and the approved-destinations list, `check <git\|https\|npm> <url>` exits 2 when the destination is refused |
+| `cortex-parsers.mjs` | The optional parser add-on: `install` fetches the packages pinned in `index/parsers.lock.json` and checks their integrity, `status` compares what is installed with the lock, `remove` deletes it; exit 2 on a refused download |
 | `cortex-setup.mjs` | `--agents copilot,gemini,codex` — register the Cortex MCP server in each agent's own config, project scope where it can be committed; a dry run unless `--write` |
+| `cortex-pack.mjs` | `<job>` or `--all` — build the role pack for a job: its skills that work outside Claude Code, as folders and zips, plus the MCP config. Generated, never committed; each release attaches them. `--list` and `--check` write nothing |
 | `cortex-plugin-check.mjs` | Which Cortex this session is actually running, and whether it is the one you edited |
 | `cortex-skill-graph.mjs` | Which ritual reaches which; `--check` fails on one stranded in both directions |
 | `cortex-skill-links.mjs` | Whether every link from a ritual to a file or a heading resolves; `--check` fails on a dead one |
@@ -63,6 +68,6 @@ This table is the Cortex README's, copied row for row. In the Cortex repository,
 | `cortex-placeholders.mjs` | Did a file Cortex stamped keep a placeholder from its template; exit 1 if so |
 | `cortex-claude-docs.mjs` | Are the Claude Code rules Cortex ships still stated on Anthropic's pages, and has Anthropic published a page Cortex has not seen (the Claude Code docs, the blog, and three sections of the platform docs); `--check` exits 1 on a stale rule, 3 on a new page |
 | `cortex-site-facts.mjs` | The facts the public site states, read from source; `--check` names each one that drifted |
-| `cortex-site-demo.mjs` | What a `/cortex` run prints on a new repo, a working project and a team's repo, captured for the site's walkthrough |
+| `cortex-site-demo.mjs` | What a `/setup-repo` run prints on a new repo, a working project and a team's repo, captured for the site's walkthrough |
 | `server/server-setup.sh` | Set up a team brain: the bare repo on a server, a clone on each machine, the cron lines |
 | `server/cortex-cron.sh` | Run by cron on the server: pull the team brain, write a daily digest or weekly audit, push it |

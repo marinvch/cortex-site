@@ -7,12 +7,12 @@ which.
 
 A **small** root brief — what the repo is, how to run it, its invariants and gotchas — ending in a
 **routing table**. `CLAUDE.md` and `GEMINI.md` are one-line shims importing it, so Claude, Gemini,
-Copilot and Cursor all read the same file. The one addition is Claude-specific: `/cortex` appends
+Copilot and Cursor all read the same file. The one addition is Claude-specific: `/setup-repo` appends
 a `## Verifying your work` block to `CLAUDE.md`. `GEMINI.md` stays one line. Claude Code v2.1.277
 and later can read `AGENTS.md` with no `CLAUDE.md` at all, and the shim is still written: older
 versions and some sessions cannot, and the import is never read twice.
 
-Written by `/cortex-scaffold`, the apply step: it is invoked explicitly and never runs on its own.
+Written by `/write-context-docs`, the apply step: it is invoked explicitly and never runs on its own.
 
 Everything Cortex writes here is written with LF line endings, then run through the formatter the
 repo declares — on exactly those files, never the whole tree — and the repo's own lint or format
@@ -30,7 +30,7 @@ A **brief** is a scoped `AGENTS.md` inside a directory, holding what the root ca
 invariants and gotchas. It is reached through the routing table and read only when work happens
 there.
 
-`/cortex-brief <dir>` writes one for a part of the repo that earns it — a directory that is
+`/write-area-brief <dir>` writes one for a part of the repo that earns it — a directory that is
 critical, high-churn, or holds invariants an agent could violate — and wires it into the routing
 table. It proposes candidates from the index, or takes a directory you name; you confirm each one.
 One filename per area, never a sprawl of per-topic files.
@@ -48,12 +48,12 @@ rule holds: a gotcha states a limit no test could pin.
 root when `docs/` is the source of a published docs site, so the records are not published with
 the user guide. ADRs already on disk stay where they are.
 
-`/domain-modeling` builds and sharpens them — it challenges fuzzy terms, stress-tests them against
+`/define-terms` builds and sharpens them — it challenges fuzzy terms, stress-tests them against
 scenarios, and writes the glossary and decisions down as they crystallise.
 
 ## Skills that fit the stack
 
-`/cortex-skills` proposes skills for **this** codebase, from what the index detected — a webhook
+`/suggest-skills` proposes skills for **this** codebase, from what the index detected — a webhook
 skill because the repo takes payments, a migration skill because it owns a database schema, a
 first-test skill because it has none. You pick each one; they are written into the repo and
 committed with its code.
@@ -63,9 +63,14 @@ Prisma schema — so Claude Code loads it only when those files are in play. A s
 file-shaped behind it gets no `paths:` line at all, and agents that ignore the key read the skill
 as before.
 
+Codex and Gemini CLI read skills only from `.agents/skills/`. `/suggest-skills` asks once whether
+the team uses either, and on a yes writes an identical copy of each skill there; `.claude/skills/`
+stays the source, and a copy that has drifted is reported. Rules stay in `AGENTS.md` and the scoped
+`<dir>/AGENTS.md` files, which every major agent reads, so Cortex writes no `.claude/rules/`.
+
 ## Keeping it small
 
-`/optimize-context` audits and slims an existing `AGENTS.md`, `CLAUDE.md` or `.cursorrules` — run
+`/trim-agent-docs` audits and slims an existing `AGENTS.md`, `CLAUDE.md` or `.cursorrules` — run
 it **before** scaffolding, so you end with one file rather than two to merge. A context file that
 grows too long gets ignored: when an agent keeps breaking a rule that is written down, the file is
 usually too long, not the rule too weak.

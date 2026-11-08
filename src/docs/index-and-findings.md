@@ -13,14 +13,22 @@ the same tree always produces the same output — two runs agree byte for byte. 
 It lives at `.cortex/index/index.json` and is the source of truth for structure. It asks **git**
 which files belong to the repo, rather than guessing from ignore files.
 
-**Imports are resolved by pattern, not by a parser.** A plugin install runs no build, so there is
-no parser to run. The consequence is stated rather than hidden: dynamic imports are invisible, so
+**Imports are resolved by pattern, not by a parser.** A plugin install runs no build, so the import
+graph needs no parser. The consequence is stated rather than hidden: dynamic imports are invisible, so
 every "who depends on this" number is a **floor**, never a total, and an orphan is stated as a
 question, never as a delete list.
 
 Pattern-based is not path-only. A monorepo's own packages resolve by name — `@scope/pkg` reaches
 the package's source through the workspace that declares it — and a Java class reaches the classes
 of its own package that it names without an import.
+
+**Clusters.** The index groups files that import each other more than they import the rest of the
+repo, found by the Leiden method, and names each **cluster** by its **hub**, the member with the
+most import links. A cluster is a feature read off the imports, not a folder: it can span several
+areas or split one. `node index/cortex-graph.mjs .` prints the graph report — the ten best-linked
+files, the **bridges** between clusters that look least expected, one shortest loop per import
+cycle, and the clusters with no test found — and writes nothing. A bridge is worth a look, never a
+defect.
 
 **The route map.** The index also records the HTTP calls a front end makes and the handlers a back
 end declares. `node index/cortex-routes.mjs <dir> --workspace` joins them across a directory of
@@ -46,7 +54,7 @@ The single ranked markdown report at `.cortex/findings/<date>.md` — issues, ga
 opportunities, ranked by severity. **Proposals only.** The module that produces findings has no
 authority to modify a repository; nothing outside `.cortex/` is written until you choose.
 
-The ranking is not decoration: it is the order `/cortex` walks when it asks you what to act on.
+The ranking is not decoration: it is the order `/setup-repo` walks when it asks you what to act on.
 Offers collapse by action, so one "add a brief" question can cover several findings — and a merged
 question inherits the severity of its most serious member, so merging never buries a critical one.
 
@@ -67,15 +75,50 @@ It is judged by its files, never by its code: whether `modules` is an array of o
 that path names a file, and its extension. Which events the module handles and which calls it makes
 is what `claude plugin validate` prints.
 
-When the repo has a root `CLAUDE.md` and scoped briefs, the report's glance and `/cortex-next` say
+When the repo has a root `CLAUDE.md` and scoped briefs, the report's glance and `/resume-work` say
 that those briefs load through the routing table only, because under a root `CLAUDE.md` Claude Code
 does not read a subdirectory's `AGENTS.md` on its own. It is stated as a fact, not a finding: no
 edit to the repo changes it.
 
+## Which function calls which (optional add-on)
+
+The import graph says which files depend on each other. To see which functions call which, install
+the parser add-on once per machine:
+
+```bash
+node tools/cortex-parsers.mjs install   # downloads about 8.3 MB from registry.npmjs.org
+node tools/cortex-parsers.mjs status    # what is installed, against index/parsers.lock.json
+node tools/cortex-parsers.mjs remove    # deletes it again
+```
+
+Nothing installs it for you. It fetches seven MIT-licensed npm packages pinned in
+`index/parsers.lock.json`: the WebAssembly build of the tree-sitter parser and its grammars for
+JavaScript, TypeScript and TSX, Python, Go, Java and Rust. Each tarball's sha512 is checked against
+the lock before anything is unpacked, and the files go to `~/.cortex/parsers/`, never into the
+plugin or a repo. No install script runs. On a `work` profile the registry must be an
+[approved destination](#/privacy), and `--registry <url>` fetches from your company's mirror instead.
+
+With the add-on, the index also holds **symbols** — the functions, classes and methods each file
+defines (`src/cart.ts#total`, `src/cart.ts#Cart.add`) — and the calls between them. Each call
+carries a **confidence**: **extracted** when the code states it (the same file, or a name an import
+binds), **inferred** when one candidate was found by name, **ambiguous** when several were, all
+kept. Go and Java files see their own package without an import, and a call on a parameter or local
+resolves through its declared type. Without the add-on the index is exactly what it was.
+
+```bash
+node index/cortex-impact.mjs --symbol src/cart.ts#total   # who calls it, and which callers no test covers
+node mcp/ai-os.js graph callers src/cart.ts#total         # the same, through the graph tool
+node mcp/ai-os.js graph callees src/cart.ts#Cart.add      # what it calls
+node mcp/ai-os.js graph defines src/cart.ts               # what a file defines
+```
+
+The count of callers is a floor of **extracted** calls; inferred and ambiguous ones are listed apart.
+Without the add-on these refuse and print the install command, rather than answering "no callers".
+
 ## Enrichment
 
 The optional prose layer — a summary, role and tags per file — produced by a model with
-`/cortex-enrich`. It lives beside the index in `enriched.json` and is **strictly additive**: it
+`/summarize-files`. It lives beside the index in `enriched.json` and is **strictly additive**: it
 never edits `index.json`, adds files or removes them, and its absence degrades Cortex to
 deterministic behaviour rather than breaking it.
 
@@ -91,5 +134,6 @@ node index/cortex-next.mjs .        # where this repo is; writes nothing at all
 node index/cortex-index.mjs .       # writes .cortex/index/index.json
 node index/cortex-findings.mjs .    # writes .cortex/findings/<date>.md
 node index/cortex-view.mjs .        # writes .cortex/view/repo.html and opens it
+node index/cortex-graph.mjs .       # hubs, bridges, cycles, untested clusters; writes nothing
 node index/cortex-enrich.mjs plan . # optional: plan the semantic enrichment pass
 ```

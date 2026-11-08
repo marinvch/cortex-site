@@ -6,7 +6,7 @@ rejected. They are the reasons Cortex behaves the way it does.
 ## The user decides, not the AI
 
 Indexing and reporting cannot modify your repository. **The findings report is a proposal**, and
-applying it is a separate, explicitly invoked step. `/cortex` may start the install sequence on its
+applying it is a separate, explicitly invoked step. `/setup-repo` may start the install sequence on its
 own, but what protects your repo is a **consent gate on the first write**, not a flag that stops
 the sequence from starting. *(ADR 0005)*
 
@@ -22,6 +22,11 @@ A plugin install clones the repository — it does not run `npm install`, honour
 Whatever is in the tree is what runs. So Cortex has **no runtime dependencies**: its MCP transport
 is about a hundred lines of Node, and a test fails the build if an import creeps back in.
 *(ADR 0004)*
+
+One thing needs a parser: reading which function calls which. That is an **add-on you install**,
+once per machine, with one command. It is pinned and checked against a lock, lives outside the
+plugin and every repo, and without it Cortex works exactly as before. Nothing installs it for you.
+*(ADR 0029)*
 
 ## One door onto a root
 

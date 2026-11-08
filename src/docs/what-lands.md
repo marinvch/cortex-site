@@ -25,11 +25,13 @@ intent/               where a change starts: intent → spec → plan
                       role it plays, or none), so it is asked once
 ```
 
-Nothing above appears until you choose it. `/cortex` and `/cortex-install` index and report
-read-only, then ask; `/cortex-scaffold` is the separate step that writes.
+Nothing above appears until you choose it. `/setup-repo` indexes and reports
+read-only, in the full pass or the report-only one, then asks; `/write-context-docs` is the separate step that writes.
 
 The files Cortex stamps into your repository are yours: they are granted to you under MIT-0, so no
-attribution and no notice is required, and Cortex adds no licence header to them.
+attribution and no notice is required, and Cortex adds no licence header to them. Every ritual is
+written in Cortex's own words; the only third-party text Cortex ships is the short quotations of
+Anthropic's documentation it checks its rules against.
 
 ## Why memory is committed
 
@@ -75,10 +77,10 @@ personal notes or employer-sensitive material.
 
 ## Why the stamp record is committed
 
-The loop files `/cortex` writes — `REVIEW.md`, the verifier, the hooks and the rest — once never
+The loop files `/setup-repo` writes — `REVIEW.md`, the verifier, the hooks and the rest — once never
 changed again: a hook fixed in a later release stayed broken in every repo stamped before the fix.
 Now each one is recorded in `.cortex/stamps.json` with the release and template that wrote it, and a
-re-run of `/cortex` compares both against that record:
+re-run of `/setup-repo` compares both against that record:
 
 | State | What the re-run does |
 |---|---|
@@ -91,7 +93,7 @@ re-run of `/cortex` compares both against that record:
 The record is committed because it is how the next release tells your team's edits from Cortex's
 own. A repo stamped before the record existed adopts its files without a single rewrite: one
 confirmed row writes the record and nothing else, and each adopted file then reads as a conflict.
-Once the record is written, `/cortex` says how many there are and asks whether to go through them
+Once the record is written, `/setup-repo` says how many there are and asks whether to go through them
 now or on the next run; either way no adopted file changes without its own answer. The agent team's
 files are recorded too: its agents, the Tester's fence script and the `team` skill. The `CLAUDE.md`
 verification block, the team's section in `CLAUDE.md` and the hooks merged into
@@ -113,7 +115,7 @@ ever does, until someone decides how the change should reach repos that already 
 
 ## The agent team
 
-`/cortex` also offers a small team of agents, written into `.claude/agents/` and committed with the
+`/setup-repo` also offers a small team of agents, written into `.claude/agents/` and committed with the
 code. Each one does one job, carries only the tools that job needs, and is filled in from this
 repo's own commands, briefs and ADRs. Every claim one makes about the repo cites a `path:line`, an
 ADR or a command's output.
@@ -141,7 +143,7 @@ diff.
 ### How a task runs
 
 A short section in `CLAUDE.md` puts the team to work. Before any work on a new task that changes
-code, your session runs `/cortex-impact <files> --size` on the files the task will touch and tells
+code, your session runs `/change-impact <files> --size` on the files the task will touch and tells
 you, in words, what it recommends (one agent, the team, or that it cannot size the task) and why.
 Then it ends its reply with the question **"Single agent or team?"** and waits: it plans, edits and
 delegates nothing until you answer. It asks even when the recommendation is a single agent, and
@@ -153,7 +155,7 @@ tell you. So the confirmation that offers the team says it under the row, in wor
 session stops before a code task and asks "Single agent or team?".
 
 The first release that offered the team wrote a section that could skip the question. On a repo
-that has it, a re-run of `/cortex` offers to replace it, as described under the stamp record above.
+that has it, a re-run of `/setup-repo` offers to replace it, as described under the stamp record above.
 
 Only once you answer "team" does the session load the `team` skill:
 
@@ -162,7 +164,7 @@ Only once you answer "team" does the session load the `team` skill:
    dropped, and the session says how many it dropped.
 3. The Architect accepts or rebuts each remaining objection, with a citation.
 4. After at most two rounds, whatever is still open comes to you side by side, and you decide. Two
-   is the default. Ask `/cortex` for another limit, from one to five, and it is written into the
+   is the default. Ask `/setup-repo` for another limit, from one to five, and it is written into the
    `team` skill and kept on later updates.
 5. Then comes a failing test, the change, and an independent review.
 

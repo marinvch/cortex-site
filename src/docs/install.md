@@ -5,13 +5,23 @@ project or an empty one.
 
 {{install}}
 
-The first two lines add the marketplace and install the plugin. The third, `/cortex`, runs
+The first two lines add the marketplace and install the plugin. The third, `/setup-repo`, runs
 **inside the repo you want it to serve**.
+
+**Used Cortex before 3.0.0?** Every ritual now has a plain name for the job it does, and the old
+commands no longer exist.
+[docs/renamed-rituals.md](https://github.com/marinvch/Cortex/blob/master/docs/renamed-rituals.md)
+maps every old name to its new one.
+
+**Not a developer, or not in Claude Code?** The pages under *By role* say what each job installs:
+the plugin for [developers](#/for-developers), [team leads](#/for-team-leads) and [QA](#/for-qa),
+a role pack for [project managers](#/for-project-managers), and either for
+[architects](#/for-architects).
 
 Then turn on auto-update once — Claude Code leaves it off for third-party marketplaces like this
 one, so without it no release reaches you. **Keeping it current**, below, has the clicks.
 
-## What `/cortex` does on first run
+## What `/setup-repo` does on first run
 
 It indexes the codebase, writes **one findings report** — issues, gaps and recommendations,
 ranked — works out which parts of the development loop the repo is missing (a verification block
@@ -22,7 +32,7 @@ Nothing in your repo is modified until you pick what to act on. Indexing and rep
 read-only by construction: a different skill applies changes.
 
 The question covers what the repo is missing and, for the optional plugin tiers, only what this
-machine lacks: `/cortex` reads Claude Code's plugin registry first, writing nothing, and a tier
+machine lacks: `/setup-repo` reads Claude Code's plugin registry first, writing nothing, and a tier
 that is already installed is not offered again. A row that changes more than its files says so
 under its paths, so the one yes covers what you were told.
 
@@ -58,16 +68,16 @@ current release is **v{{version}}**.
 
 ### On a team
 
-Here updating is not housekeeping. The files `/cortex` stamps are shared through the committed
+Here updating is not housekeeping. The files `/setup-repo` stamps are shared through the committed
 `.cortex/stamps.json`, but the plugin is per machine. When that record was written by a newer Cortex
-than yours, `/cortex`, `/cortex-next` and `cortex-stamps.mjs` say so and give you the two commands
+than yours, `/setup-repo`, `/resume-work` and `cortex-stamps.mjs` say so and give you the two commands
 above — and your older plugin refuses to rewrite any file a newer one stamped, because it would put
 its own older template back. It does not list those files either, not even as a preview of what
 the update will offer: a file that reads out of date against the older templates may be current
 against the newer ones. Asking it to just update everything gets the same answer — updating the
 plugin is how everything gets updated.
 
-On a team's repo — your profile is `work`, or `/team-add` connected it to a team brain — `/cortex`
+On a team's repo — your profile is `work`, or `/join-team` connected it to a team brain — `/setup-repo`
 also offers to add Cortex to the repo's committed `.claude/settings.json`: the `cortex` marketplace
 under `extraKnownMarketplaces` and `cortex@cortex` under `enabledPlugins`. It merges those two
 entries in and changes nothing else. Once a teammate trusts the folder, Claude Code registers the
@@ -87,17 +97,17 @@ into your organisation, then tell Cortex where it comes from: a GitHub `owner/re
 (`https://`, `ssh://` or `git@host:path`), or an absolute path to a local marketplace. Cortex
 refuses a URL carrying a password or a token.
 
-- **For a team:** `/team-init --source acme/cortex` writes it to `team.json` in the team-brain.
-  Every `/team-add` copies it into that repo's `.cortex/connector.json`, so members pass no flag.
+- **For a team:** `/create-team --source acme/cortex` writes it to `team.json` in the team-brain.
+  Every `/join-team` copies it into that repo's `.cortex/connector.json`, so members pass no flag.
 - **For one machine or one run:** set `CORTEX_SOURCE=acme/cortex`, or pass
   `cortex-shared-plugin.mjs . --write --source acme/cortex`.
 
 The order is `--source`, then `CORTEX_SOURCE`, then the connector, then `marinvch/Cortex`. With none
 set, everything Cortex writes is what it always was. The source decides two things: the `cortex`
-entry `/cortex` adds to `.claude/settings.json` points at your fork, and a stamped
+entry `/setup-repo` adds to `.claude/settings.json` points at your fork, and a stamped
 `cortex-review.yml` clones your fork at the release tag that stamped it, with `.cortex/stamps.json`
 recording that URL. A `cortex` entry already in the file is left as it is, whichever source it
-names. A CI runner cannot clone a local path, so on a directory source `/cortex` does not stamp the
+names. A CI runner cannot clone a local path, so on a directory source `/setup-repo` does not stamp the
 workflow.
 
 To take an upstream release, bring its tag into the fork — the CI clone needs the tag, and the
@@ -130,5 +140,5 @@ server. It never replaces an existing `cortex` entry, and it also adds
 
 ## Next
 
-- [The sequence](#/sequence) — what to run after `/cortex`, and how Cortex tells you.
+- [The sequence](#/sequence) — what to run after `/setup-repo`, and how Cortex tells you.
 - [What lands in your repo](#/what-lands) — every file it can write, and which are committed.

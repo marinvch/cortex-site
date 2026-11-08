@@ -28,14 +28,14 @@ cp Cortex/templates/home.md ~/cortex-brain/home.md   # your personal map
 The rituals come from the plugin, so they are available in the vault folder without copying
 anything else in.
 
-**2. Teach the brain who you are** — from the vault folder, run `/onboard`. It interviews you and
+**2. Teach the brain who you are** — from the vault folder, run `/personal-setup`. It interviews you and
 fills `context/`, `connections.md` and `references/voice.md`.
 
 **3. Use it daily**
 
 ```
-/capture        # drop any thought into the inbox (anytime)
-/daily          # start today's note; priorities + what's due (each morning)
+/quick-note        # drop any thought into the inbox (anytime)
+/daily-plan          # start today's note; priorities + what's due (each morning)
 /weekly-review  # empty the inbox, update projects, archive stale (weekly)
 ```
 
@@ -45,7 +45,7 @@ notes, rendered markdown with clickable links, your registered codebases, and th
 ## Connect it as a live brain
 
 The vault can be served by the same MCP server in **vault mode**, so `recall` and `capture` become
-real tools in every project on your machine. `/connect-brain` registers it for you, as a server
+real tools in every project on your machine. `/connect-mcp` registers it for you, as a server
 named `cortex` with `CORTEX_ROOT` set to your vault's path — the only configuration there is.
 
 A server already registered as `ai-os`, with `AI_OS_ROOT`, keeps working and needs no change: that

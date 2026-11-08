@@ -27,7 +27,7 @@ prevent has already been made once.
 - **Cortex follows the Claude Code rules it reports on.** A test runs the `claude-setup/` findings
   over the Cortex repository itself and fails on any. Fix the repo, never the checker: loosening a
   check loosens it for every user.
-- **The plugin ships no mod and no hooks, and `/cortex-scaffold` keeps the `CLAUDE.md` shim.** A
+- **The plugin ships no mod and no hooks, and `/write-context-docs` keeps the `CLAUDE.md` shim.** A
   mod runs unsandboxed in every user's session and does not load under the policy a work machine is
   likeliest to have. The shim is what sessions that cannot read `AGENTS.md` directly depend on.
 - **A ritual a model may invoke has trigger prompts** — what a person would type to reach it, and
@@ -38,6 +38,10 @@ prevent has already been made once.
   unreachable except by someone who already knows it exists.
 - **A destructive shell tool routes its target through the root guard.** A string-prefix check is
   not a guard: a symlink out of the root passes any prefix comparison.
+- **Every outward call checks its destination first.** A push, pull, clone, tracker request or API
+  call goes through `assertDestination` (`core/destinations.js`) with the profile's policy, and a
+  new outward path must too. On `work` an unapproved host is refused and the local work is kept.
+  *(ADR 0030)*
 - **A template that says something is refused ships the thing that refuses it.** A lock that prose
   promised and no template provided was removed once. The Tester's fence is the model: its agent
   file may say an edit outside test files is refused only because the hook and its script ship with

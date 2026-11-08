@@ -3,7 +3,7 @@
     "commands": [
       "/plugin marketplace add marinvch/Cortex",
       "/plugin install cortex",
-      "/cortex"
+      "/setup-repo"
     ]
   },
   "mcpTools": [
@@ -53,7 +53,15 @@
       "name": "get_project_context"
     },
     {
-      "description": "Open asks addressed to your roles or projects, and the answers to asks you sent. Pulls the team-brain first. Call it at the start of a task.",
+      "description": "The code graph. In a repo, from its Cortex index: stats · node (file) · neighbors (file, depth 1-3) · cluster (cluster or file) · hubs · bridges · path (from, to, directed) · callers / callees (symbol) · defines (file), the last three when the parser add-on built symbols. On a team, from the team-brain: story (key: the code an epic or story touched, its clusters, contracts, untested files, hubs and open asks) · stories-for (file or cluster, with project) · risk (open stories touching untested or hub code). Refuses a missing or stale index or story links and names the command that rebuilds them. Lists are capped; every count is a floor.",
+      "modes": [
+        "repo",
+        "vault"
+      ],
+      "name": "graph"
+    },
+    {
+      "description": "Open asks addressed to your roles or projects, and the answers to asks you sent. Pulls the team-brain first. Call it at the start of a task. `me.job` is your job in the team (developer when none is recorded).",
       "modes": [
         "repo",
         "vault"
@@ -93,226 +101,196 @@
   "node": ">=20",
   "rituals": [
     {
-      "does": "brainstorm → design spec → plan. **No code.**",
-      "invocation": "model",
-      "name": "analyze-spec",
-      "when": "per risky feature"
-    },
-    {
-      "does": "one-line drop to `inbox/` or today's daily note",
+      "does": "find deepening opportunities in a repo, report them as HTML, work one",
       "invocation": "user",
-      "name": "capture",
-      "when": "anytime"
-    },
-    {
-      "does": "brain notes + team-brain git history → what changed & why",
-      "invocation": "model",
-      "name": "catch-me-up",
-      "when": "after time away"
-    },
-    {
-      "does": "install the Cortex Core plugin bundle, and register `mcp/server.js` at user scope for recall/capture",
-      "invocation": "user",
-      "name": "connect-brain",
-      "when": "once per machine"
-    },
-    {
-      "does": "the single install: index, report, and stamp the whole SDLC loop in one pass, after one confirmation",
-      "invocation": "model",
-      "name": "cortex",
-      "when": "**per repo — start here**"
+      "name": "architecture-review",
+      "when": "on request"
     },
     {
       "does": "vault health: find + fix orphans, dead links, misplaced files, privacy leaks; `score` for the read-only four-layer score, `graph` to rebuild the navigator",
       "invocation": "model",
-      "name": "cortex-audit",
+      "name": "audit-notes",
       "when": "periodic"
     },
     {
-      "does": "write scoped `AGENTS.md` leaves + wire the root routing table",
+      "does": "interview in rounds until the design tree has no unresolved branch",
       "invocation": "model",
-      "name": "cortex-brief",
-      "when": "per critical area"
-    },
-    {
-      "does": "add summaries/roles/tags on top of the index. Costs tokens; optional",
-      "invocation": "model",
-      "name": "cortex-enrich",
-      "when": "on request"
+      "name": "challenge-plan",
+      "when": "before committing to a plan"
     },
     {
       "does": "who depends on these files, and which of it no test covers; `--against` — where it collides with another session's change set; `--size` — one agent or a team, recommended",
       "invocation": "model",
-      "name": "cortex-impact",
+      "name": "change-impact",
       "when": "before a change"
     },
     {
-      "does": "index a codebase and report findings, scaffolding only what the user picks. `/cortex` runs this and keeps going",
+      "does": "the prompt gate — scores a vague prompt and sharpens it before work starts",
       "invocation": "model",
-      "name": "cortex-install",
-      "when": "when you want the read half alone"
+      "name": "clarify-request",
+      "when": "automatic"
     },
     {
-      "does": "where this repo is in the sequence, and the one command to run now",
-      "invocation": "model",
-      "name": "cortex-next",
-      "when": "any time you are lost"
+      "does": "install the Cortex Core plugin bundle, and register `mcp/server.js` at user scope for recall/capture",
+      "invocation": "user",
+      "name": "connect-mcp",
+      "when": "once per machine"
     },
     {
-      "does": "show or set which world this install serves — home · work · lab",
-      "invocation": "model",
-      "name": "cortex-profile",
-      "when": "per machine"
-    },
-    {
-      "does": "judge a change against the repo's own docs, and spot the ones it made wrong",
-      "invocation": "model",
-      "name": "cortex-review",
-      "when": "before committing"
-    },
-    {
-      "does": "write the context layer — root `AGENTS.md`, shims, `CONTEXT.md`, `docs/adr/`",
-      "invocation": "model",
-      "name": "cortex-scaffold",
-      "when": "on request"
-    },
-    {
-      "does": "propose + write skills that fit the detected stack",
-      "invocation": "model",
-      "name": "cortex-skills",
-      "when": "after scaffold"
-    },
-    {
-      "does": "render the index as one offline HTML page — overview, map, structure, files, areas, gaps",
-      "invocation": "model",
-      "name": "cortex-view",
-      "when": "after install"
+      "does": "create + seed the shared team-brain repo",
+      "invocation": "user",
+      "name": "create-team",
+      "when": "leader, once"
     },
     {
       "does": "open today's note; surface priorities + due items",
       "invocation": "user",
-      "name": "daily",
+      "name": "daily-plan",
       "when": "each day"
     },
     {
       "does": "build a red-capable loop first, ranked against the repo’s own invariants",
       "invocation": "model",
-      "name": "diagnosing-bugs",
+      "name": "debug-issue",
       "when": "on a hard bug"
     },
     {
       "does": "sharpen that repo's glossary — write its `CONTEXT.md` + ADRs",
       "invocation": "model",
-      "name": "domain-modeling",
+      "name": "define-terms",
       "when": "per repo, ongoing"
+    },
+    {
+      "does": "brainstorm → design spec → plan. **No code.**",
+      "invocation": "model",
+      "name": "design-spec",
+      "when": "per risky feature"
     },
     {
       "does": "consolidate the day into the repo's committed `.cortex/memory/`",
       "invocation": "model",
-      "name": "dream",
+      "name": "end-of-day-summary",
       "when": "end of day"
-    },
-    {
-      "does": "interview in rounds until the design tree has no unresolved branch",
-      "invocation": "model",
-      "name": "grilling",
-      "when": "before committing to a plan"
     },
     {
       "does": "compact this conversation to the OS temp dir for the next agent",
       "invocation": "user",
-      "name": "handoff",
+      "name": "handover-notes",
       "when": "leaving work mid-flight"
     },
     {
-      "does": "find deepening opportunities in a repo, report them as HTML, work one",
-      "invocation": "user",
-      "name": "improve-codebase-architecture",
-      "when": "on request"
+      "does": "clone the team-brain; drop `.cortex/connector.json`",
+      "invocation": "model",
+      "name": "join-team",
+      "when": "per product repo"
     },
     {
-      "does": "Notice→Decide→Build interview; ship one artifact",
-      "invocation": "user",
-      "name": "level-up",
-      "when": "biweekly"
+      "does": "judge it against the repo's docs, one PR at a time, merge in an order that strands nothing",
+      "invocation": "model",
+      "name": "merge-work",
+      "when": "work is finished"
     },
     {
       "does": "move off the retired `.ai-os/` engine",
       "invocation": "user",
-      "name": "migrate-engine",
+      "name": "migrate-legacy-engine",
       "when": "per repo, once"
     },
     {
       "does": "interview the user; fill `context/`, `home.md`, `connections.md`",
       "invocation": "user",
-      "name": "onboard",
+      "name": "personal-setup",
       "when": "once"
     },
     {
-      "does": "audit + slim that repo's agent context files",
-      "invocation": "model",
-      "name": "optimize-context",
-      "when": "per repo"
-    },
-    {
-      "does": "the prompt gate — scores a vague prompt and sharpens it before work starts",
-      "invocation": "model",
-      "name": "optimize-prompt",
-      "when": "automatic"
-    },
-    {
-      "does": "make the Cortex this session runs the one you edited",
-      "invocation": "model",
-      "name": "plugin-sync",
-      "when": "a skill edit had no effect"
-    },
-    {
-      "does": "resolve a stuck merge/rebase by intent, hunk by hunk. Never `--abort`",
-      "invocation": "model",
-      "name": "resolving-merge-conflicts",
-      "when": "on conflict"
-    },
-    {
-      "does": "committed · uncommitted · diverged, then what is left — before touching anything",
-      "invocation": "model",
-      "name": "resume",
-      "when": "starting on work already in flight"
+      "does": "one-line drop to `inbox/` or today's daily note",
+      "invocation": "user",
+      "name": "quick-note",
+      "when": "anytime"
     },
     {
       "does": "register personal repos into `projects/` — metadata only",
       "invocation": "user",
-      "name": "scan-projects",
+      "name": "register-projects",
       "when": "anytime"
     },
     {
-      "does": "judge it against the repo's docs, one PR at a time, merge in an order that strands nothing",
+      "does": "render the index as one offline HTML page — overview, map, structure, files, areas, gaps",
       "invocation": "model",
-      "name": "ship",
-      "when": "work is finished"
+      "name": "repo-map",
+      "when": "after install"
+    },
+    {
+      "does": "resolve a stuck merge/rebase by intent, hunk by hunk. Never `--abort`",
+      "invocation": "model",
+      "name": "resolve-conflicts",
+      "when": "on conflict"
+    },
+    {
+      "does": "committed · uncommitted · diverged, then what is left — before touching anything; where the repo is in the setup sequence, and the one command to run now",
+      "invocation": "model",
+      "name": "resume-work",
+      "when": "starting on work already in flight, or lost in the setup"
+    },
+    {
+      "does": "Notice→Decide→Build interview; ship one artifact",
+      "invocation": "user",
+      "name": "retrospective",
+      "when": "biweekly"
+    },
+    {
+      "does": "judge a change against the repo's own docs, and spot the ones it made wrong",
+      "invocation": "model",
+      "name": "review-change",
+      "when": "before committing"
+    },
+    {
+      "does": "show or set which world this install serves — home · work · lab",
+      "invocation": "model",
+      "name": "set-profile",
+      "when": "per machine"
+    },
+    {
+      "does": "the single install: index, report, and stamp the whole SDLC loop in one pass, after one confirmation. A report-only path indexes and reports and writes nothing else",
+      "invocation": "model",
+      "name": "setup-repo",
+      "when": "**per repo — start here**"
+    },
+    {
+      "does": "each epic traced to the code its stories touched, what waits on an open ask, where the risk is. Never estimates",
+      "invocation": "model",
+      "name": "story-map",
+      "when": "a PM's status, any time"
+    },
+    {
+      "does": "propose + write skills that fit the detected stack",
+      "invocation": "model",
+      "name": "suggest-skills",
+      "when": "after scaffold"
+    },
+    {
+      "does": "add summaries/roles/tags on top of the index. Costs tokens; optional",
+      "invocation": "model",
+      "name": "summarize-files",
+      "when": "on request"
     },
     {
       "does": "bring Cortex's public site back in line with the source — refresh its facts, redraft changed pages, PR after approval",
       "invocation": "model",
-      "name": "site-sync",
+      "name": "sync-website",
       "when": "after a Cortex release"
     },
     {
-      "does": "which skills are never reached, redundant, or a prompt would do better",
+      "does": "audit + slim that repo's agent context files; judge which skills are never reached, redundant, or weaker than a plain prompt",
       "invocation": "model",
-      "name": "skill-audit",
-      "when": "when the collection has grown"
+      "name": "trim-agent-docs",
+      "when": "per repo, or when the skill collection has grown"
     },
     {
-      "does": "clone the team-brain; drop `.cortex/connector.json`",
+      "does": "make the Cortex this session runs the one you edited",
       "invocation": "model",
-      "name": "team-add",
-      "when": "per product repo"
-    },
-    {
-      "does": "create + seed the shared team-brain repo",
-      "invocation": "user",
-      "name": "team-init",
-      "when": "leader, once"
+      "name": "update-plugin",
+      "when": "a skill edit had no effect"
     },
     {
       "does": "empty `inbox/`, update `projects/`, restamp `current-focus`",
@@ -321,18 +299,30 @@
       "when": "weekly"
     },
     {
-      "does": "generate a script that walks a *human* through steps only they can do",
-      "invocation": "user",
-      "name": "wizard",
-      "when": "on request"
+      "does": "brain notes + team-brain git history → what changed & why",
+      "invocation": "model",
+      "name": "whats-changed",
+      "when": "after time away"
     },
     {
       "does": "the authoring discipline behind every file Cortex writes, and the steps that create and wire a new `skills/<name>/SKILL.md`",
       "invocation": "model",
-      "name": "writing-for-agents",
+      "name": "write-agent-docs",
       "when": "writing any agent-facing doc, or a new skill"
+    },
+    {
+      "does": "write scoped `AGENTS.md` leaves + wire the root routing table",
+      "invocation": "model",
+      "name": "write-area-brief",
+      "when": "per critical area"
+    },
+    {
+      "does": "write the context layer — root `AGENTS.md`, shims, `CONTEXT.md`, `docs/adr/`",
+      "invocation": "model",
+      "name": "write-context-docs",
+      "when": "on request"
     }
   ],
   "schema": 1,
-  "version": "2.45.0"
+  "version": "3.0.0"
 }

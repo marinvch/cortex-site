@@ -10,7 +10,7 @@ const McpBrain = lazy(() => import('./pages/McpBrain'))
 
 const Loader = () => <div className="content-loader" aria-live="polite">Loading…</div>
 
-// Each page's markdown is its own chunk, fetched with the page. Imported eagerly, all thirteen sat in
+// Each page's markdown is its own chunk, fetched with the page. Imported eagerly, every page sat in
 // the bundle every visitor loads first, to read the one page they opened.
 const sources = import.meta.glob<string>('./docs/*.md', { query: '?raw', import: 'default' })
 
@@ -18,6 +18,11 @@ const docs: { path: string; title: string; file: string }[] = [
   { path: '/install', title: 'Installation', file: 'install' },
   { path: '/sequence', title: 'The sequence', file: 'sequence' },
   { path: '/what-lands', title: 'What lands in your repo', file: 'what-lands' },
+  { path: '/for-developers', title: 'For developers', file: 'for-developers' },
+  { path: '/for-architects', title: 'For architects', file: 'for-architects' },
+  { path: '/for-team-leads', title: 'For team leads', file: 'for-team-leads' },
+  { path: '/for-project-managers', title: 'For project managers', file: 'for-project-managers' },
+  { path: '/for-qa', title: 'For QA', file: 'for-qa' },
   { path: '/index-and-findings', title: 'Index & findings', file: 'index-and-findings' },
   { path: '/cortex-view', title: 'Cortex View', file: 'cortex-view' },
   { path: '/context-layer', title: 'The context layer', file: 'context-layer' },
@@ -31,7 +36,7 @@ const docs: { path: string; title: string; file: string }[] = [
 ]
 
 // A page that shows something as well as describing it. The component loads with its page, so the
-// other twelve do not carry it.
+// other pages do not carry it.
 const visuals: Record<string, () => Promise<{ default: ComponentType }>> = {
   'cortex-view': () => import('./components/ViewEmbed'),
 }
