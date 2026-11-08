@@ -33,26 +33,26 @@ They are **not** interchangeable. The cut is in-flight state versus durable know
 
 | Ritual | Writes | For |
 |---|---|---|
-| `/dream` | a dated digest into the committed `.cortex/memory/` | a future reader of the codebase — tomorrow's agents and the rest of the team |
-| `/handoff` | a compact handoff to the OS temp dir, deliberately ephemeral | the next agent, right now, picking up work mid-flight |
-| `/catch-me-up` | nothing — it reads | you, after time away: notes plus git history over a date range |
-| `/resume` | nothing — it reads the repo first | starting on work already in flight: committed, uncommitted, diverged, then what is left |
+| `/end-of-day-summary` | a dated digest into the committed `.cortex/memory/` | a future reader of the codebase — tomorrow's agents and the rest of the team |
+| `/handover-notes` | a compact handoff to the OS temp dir, deliberately ephemeral | the next agent, right now, picking up work mid-flight |
+| `/whats-changed` | nothing — it reads | you, after time away: notes plus git history over a date range |
+| `/resume-work` | nothing — it reads the repo first | starting on work already in flight: committed, uncommitted, diverged, then what is left |
 
-Running `/handoff` alone on a day that taught you something parks the work and loses the lesson.
+Running `/handover-notes` alone on a day that taught you something parks the work and loses the lesson.
 
 ## A shared team brain
 
-For knowledge that spans several repositories, a team lead runs `/team-init` once to create a
-shared private **team-brain** repository. Each developer runs `/team-add` inside a product repo to
+For knowledge that spans several repositories, a team lead runs `/create-team` once to create a
+shared private **team-brain** repository. Each developer runs `/join-team` inside a product repo to
 connect it: the team-brain is cloned locally, the repo's **project file** is written there, and a
 generic connector — the team, the project and the team-brain's URL, plus the team's Cortex fork
 when the brain names one, nothing else — is dropped into the product repo, so notes captured there
-reach the whole team. If your organisation runs Cortex from its own fork, `/team-init --source`
-records it once and every `/team-add` passes it on.
+reach the whole team. If your organisation runs Cortex from its own fork, `/create-team --source`
+records it once and every `/join-team` passes it on.
 
 A project file is `projects/<slug>.md` at the top of the team-brain: the project's title and its
 repo, and optionally a tracker, a design file, a docs site and the projects it relates to. It is
-committed and pushed when `/team-add` writes it. The team's **workspace** is the set of those files
+committed and pushed when `/join-team` writes it. The team's **workspace** is the set of those files
 and nothing more — adding a project is adding a file, and removing one is deleting it.
 
 - **Its links are shown and never fetched.**
@@ -64,7 +64,7 @@ and nothing more — adding a project is adding a file, and removing one is dele
 - **Removing a project** deletes its file, commits and pushes. The project's notes folder is never
   deleted, and other project files that still name it are reported, not edited.
 
-In a connected repo, `/catch-me-up` pulls the team-brain first (fast-forward only) and returns
+In a connected repo, `/whats-changed` pulls the team-brain first (fast-forward only) and returns
 what every repo of the team captured since the date, and which contracts changed, alongside the
 local notes. If the pull fails it says so, rather than reporting a quiet week from a stale clone. A
 memory entry is attributed to its author only when its file names one; an older day file's entries
@@ -74,19 +74,28 @@ are attributed to nobody.
 
 The team-brain carries work between people, not just notes.
 
-- **Roles.** `/team-add` asks each member which roles they hold — `frontend`, `backend`,
+- **Roles.** `/join-team` asks each member which roles they hold — `frontend`, `backend`,
   `architect`, whatever the team uses — and which projects they own, and writes them to the
   brain's `team.json`. A member's handle is their memory author name. Without this step, asks sent
   to their role never reach them.
+- **Jobs.** Each member also records one job — `developer`, `architect`, `lead`, `pm` or `qa`. It
+  changes what `/setup-repo`, `/resume-work` and `/join-team` offer that person first, never what
+  they may run, and a member with no job is a developer. The pages under *By role* say what each
+  job installs, from the plugin to a [role pack](#/for-project-managers) for people outside
+  Claude Code.
 - **Asks.** The `ask`, `inbox` and `answer` tools carry a question to a role or a project in another
   repo, and the answer back. An agent calls `inbox` at the start of a task.
-- **Contracts.** `/team-add` offers to publish the repo's contract — what it serves, calls and
+- **Contracts.** `/join-team` offers to publish the repo's contract — what it serves, calls and
   emits — so another repo can ask who calls an endpoint without cloning this one. Run it again
   after the API changes. The `contract` tool answers who serves and who calls an endpoint.
-- **Trackers.** `/team-init` asks which trackers the team plans in — GitHub issues, ServiceNow
+- **Trackers.** `/create-team` asks which trackers the team plans in — GitHub issues, ServiceNow
   Agile, Jira, or none — and asks are then synced there both ways. A credential never goes in a
   flag or in `team.json`: each tracker reads its own from the environment. The scheduled sync
   workflow is printed, and committed only once you have read it and said yes.
+- **Stories.** A tracker turned on with `--stories` has its epics and stories mirrored into the
+  brain on each full sync, never with their descriptions. Each repo publishes which code each
+  ticket key touched, and `/story-map` traces an epic to that code: what it touched, what waits on
+  an open ask, and which of it no test covers. It never estimates.
 
 How each works is on [MCP brain](#/mcp).
 

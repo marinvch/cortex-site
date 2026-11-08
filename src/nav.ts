@@ -22,6 +22,16 @@ export const navGroups: NavGroup[] = [
     ],
   },
   {
+    title: 'By role',
+    items: [
+      { label: 'Developers', path: '/for-developers' },
+      { label: 'Architects', path: '/for-architects' },
+      { label: 'Team leads', path: '/for-team-leads' },
+      { label: 'Project managers', path: '/for-project-managers' },
+      { label: 'QA', path: '/for-qa' },
+    ],
+  },
+  {
     title: 'How it works',
     items: [
       { label: 'Index & findings', path: '/index-and-findings' },

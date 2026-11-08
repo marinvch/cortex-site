@@ -9,7 +9,7 @@ mode and JSON output pages are gone because the features are gone.
 Install Cortex, then run this first, inside that repo:
 
 ```
-/migrate-engine
+/migrate-legacy-engine
 ```
 
 It **harvests first and deletes second**: the old engine's memory is read and folded into the
@@ -32,4 +32,4 @@ It looks in three places the old setup hides, and each of those checks is read-o
 where it points — into `.ai-os/` — not by its name. Cortex's own server went by `ai-os` until
 2.41.47, and such a registration is listed as kept and left alone.
 
-Then continue with [the sequence](#/sequence) — `/cortex` from the top.
+Then continue with [the sequence](#/sequence) — `/setup-repo` from the top.

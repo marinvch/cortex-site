@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import raw from '../../site-demo.json'
 
-// A `/cortex` run, played step by step. Steps 1–3 are Cortex's own output: site-demo.json is what
+// A `/setup-repo` run, played step by step. Steps 1–3 are Cortex's own output: site-demo.json is what
 // `node tools/cortex-site-demo.mjs` recorded from the indexer, the findings and the loop on three
-// small repos, and /site-sync regenerates it. Steps 4 and 5 are the site's words for what the
+// small repos, and /sync-website regenerates it. Steps 4 and 5 are the site's words for what the
 // ritual does next — it asks once, then writes the paths each row names. Nothing here is typed in
 // by hand except those two framings, so a reworded row shows up as the row, not as drift.
 
@@ -45,7 +45,7 @@ function linesFor(s: Scenario, step: number): Line[] {
   const missing = s.loop.rows.filter(r => r.status === 'missing')
   switch (step) {
     case 0:
-      return [{ kind: 'cmd', text: '/cortex' }, ...s.index.map(text => ({ kind: 'out' as const, text }))]
+      return [{ kind: 'cmd', text: '/setup-repo' }, ...s.index.map(text => ({ kind: 'out' as const, text }))]
     case 1:
       return [
         { kind: 'head', text: countsLine(s) },
@@ -166,7 +166,7 @@ export default function RunDemo() {
         <p className="run-blurb">{s.blurb}</p>
 
         <div className="run-panes">
-          <div className="run-term" ref={term} tabIndex={0} aria-label={`Output of /cortex on ${s.title.toLowerCase()}`}>
+          <div className="run-term" ref={term} tabIndex={0} aria-label={`Output of /setup-repo on ${s.title.toLowerCase()}`}>
             {blocks.map(b => (
               <div key={`${s.id}-${b.i}`} className="run-block">
                 <div className="run-block-title">{b.i + 1} · {STEPS[b.i]}</div>

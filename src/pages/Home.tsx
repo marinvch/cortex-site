@@ -49,7 +49,7 @@ const features: Feature[] = [
   {
     icon: <AutoStoriesOutlinedIcon />,
     title: `${facts.rituals.length} rituals`,
-    desc: 'Plain SKILL.md files: install, review a change, trace impact, diagnose a bug, ship, hand off.',
+    desc: 'Plain SKILL.md files: set up a repo, review a change, trace impact, debug an issue, merge work, hand over.',
     to: '/rituals',
   },
   {
@@ -60,7 +60,7 @@ const features: Feature[] = [
   },
 ]
 
-const steps = [ritual('cortex'), ritual('cortex-next'), ritual('cortex-review'), ritual('dream')]
+const steps = [ritual('setup-repo'), ritual('resume-work'), ritual('review-change'), ritual('end-of-day-summary')]
 
 export default function Home() {
   const [copied, setCopied] = useState(false)
