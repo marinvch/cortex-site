@@ -7,7 +7,7 @@ skill the same scripts run through the plugin's own path.
 ## The codebase half — `index/`
 
 ```bash
-node index/cortex-next.mjs .        # where this repo is; writes nothing at all
+node index/cortex-next.mjs .        # where this repo is, and what the team has that you lack; writes nothing
 node index/cortex-index.mjs .       # writes .cortex/index/index.json
 node index/cortex-findings.mjs .    # writes .cortex/findings/<date>.md
 node index/cortex-view.mjs .        # writes .cortex/view/repo.html and opens it

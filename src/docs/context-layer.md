@@ -39,7 +39,9 @@ Where a test already fails when an invariant breaks, the brief names that test f
 The run ends by saying which of the rules it wrote name a test and which name none, read from
 `node index/cortex-review.mjs --rules`. That command lists every rule under an `Invariants`,
 `Gotchas` or `Rules` heading in the repo's briefs. It reports what a rule names, never whether the
-rule holds: a gotcha states a limit no test could pin.
+rule holds: a gotcha states a limit no test could pin. It also says which rules not every AI tool
+is given: one only in `CLAUDE.md` or `GEMINI.md`, one in a nested brief, and a nested brief the root
+never links. That is read from where the rule sits, and is not a measurement of what a tool loaded.
 
 ## The glossary and decisions
 

@@ -29,6 +29,8 @@ export const navGroups: NavGroup[] = [
       { label: 'Team leads', path: '/for-team-leads' },
       { label: 'Project managers', path: '/for-project-managers' },
       { label: 'QA', path: '/for-qa' },
+      { label: 'Product owners', path: '/for-product-owners' },
+      { label: 'Business analysts', path: '/for-business-analysts' },
     ],
   },
   {

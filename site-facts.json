@@ -31,7 +31,7 @@
       "name": "capture"
     },
     {
-      "description": "Assemble notes + team-brain git history since <since> as raw material for the agent to summarize.",
+      "description": "Assemble notes, the team's decisions + team-brain git history since <since> as raw material for the agent to summarize.",
       "modes": [
         "vault"
       ],
@@ -324,5 +324,5 @@
     }
   ],
   "schema": 1,
-  "version": "3.1.0"
+  "version": "3.2.0"
 }
