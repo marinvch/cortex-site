@@ -46,7 +46,7 @@ the endpoints it `serves` — from an OpenAPI or Swagger file when there is one,
 map's handlers — the `calls` it makes, the `events` it publishes or consumes, and what it could not
 read, in `unread`. It reads the route map and never detects routes itself, so the two cannot
 disagree. It holds no code, no line numbers and no query strings, so an unrelated edit is not a
-contract change, and it never writes into a team-brain itself: the `ai-os` command publishes it.
+contract change, and it never writes into a team-brain itself: the `cortex` command publishes it.
 
 ## Findings
 
@@ -107,9 +107,9 @@ resolves through its declared type. Without the add-on the index is exactly what
 
 ```bash
 node index/cortex-impact.mjs --symbol src/cart.ts#total   # who calls it, and which callers no test covers
-node mcp/ai-os.js graph callers src/cart.ts#total         # the same, through the graph tool
-node mcp/ai-os.js graph callees src/cart.ts#Cart.add      # what it calls
-node mcp/ai-os.js graph defines src/cart.ts               # what a file defines
+node mcp/cortex.js graph callers src/cart.ts#total         # the same, through the graph tool
+node mcp/cortex.js graph callees src/cart.ts#Cart.add      # what it calls
+node mcp/cortex.js graph defines src/cart.ts               # what a file defines
 ```
 
 The count of callers is a floor of **extracted** calls; inferred and ambiguous ones are listed apart.

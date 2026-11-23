@@ -64,8 +64,8 @@ and nothing more — adding a project is adding a file, and removing one is dele
 - **Removing a project** deletes its file, commits and pushes. The project's notes folder is never
   deleted, and other project files that still name it are reported, not edited.
 
-In a connected repo, `/whats-changed` pulls the team-brain first (fast-forward only) and returns
-what every repo of the team captured since the date, and which contracts changed, alongside the
+In a connected repo, `/whats-changed` pulls the team-brain first and returns
+what the team decided and what every repo of it captured since the date, and which contracts changed, alongside the
 local notes. If the pull fails it says so, rather than reporting a quiet week from a stale clone. A
 memory entry is attributed to its author only when its file names one; an older day file's entries
 are attributed to nobody.
@@ -78,13 +78,19 @@ The team-brain carries work between people, not just notes.
   `architect`, whatever the team uses — and which projects they own, and writes them to the
   brain's `team.json`. A member's handle is their memory author name. Without this step, asks sent
   to their role never reach them.
-- **Jobs.** Each member also records one job — `developer`, `architect`, `lead`, `pm` or `qa`. It
+- **Jobs.** Each member also records one job — `developer`, `architect`, `lead`, `pm`, `qa`, `po`
+  (product owner) or `ba` (business analyst). It
   changes what `/setup-repo`, `/resume-work` and `/join-team` offer that person first, never what
   they may run, and a member with no job is a developer. The pages under *By role* say what each
   job installs, from the plugin to a [role pack](#/for-project-managers) for people outside
   Claude Code.
 - **Asks.** The `ask`, `inbox` and `answer` tools carry a question to a role or a project in another
   repo, and the answer back. An agent calls `inbox` at the start of a task.
+- **Decisions.** An answer with the status `decided` reaches the whole team, not only the thread:
+  `/whats-changed`, `catch_me_up` and `/story-map` list what was decided, by whom and when, across
+  every repo. Only a handle on the team's roster can record one. That catches a wrong name and is
+  not authentication: a handle is whatever `CORTEX_AUTHOR` says, and who can write to the team-brain
+  is set by the repository that hosts it.
 - **Contracts.** `/join-team` offers to publish the repo's contract — what it serves, calls and
   emits — so another repo can ask who calls an endpoint without cloning this one. Run it again
   after the API changes. The `contract` tool answers who serves and who calls an endpoint.

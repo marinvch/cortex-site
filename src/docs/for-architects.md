@@ -27,7 +27,7 @@ In a repo that `/setup-repo` has indexed, `/repo-map` shows its clusters and the
 
 ## What your job changes
 
-On a team, your job is recorded once in the team-brain's roster: `ai-os team member --job architect`, which `/join-team` asks for. It decides what `/setup-repo`, `/resume-work` and `/join-team` offer you first, never what you may run. With no job recorded you are a developer.
+On a team, your job is recorded once in the team-brain's roster: `cortex team member --job architect`, which `/join-team` asks for. It decides what `/setup-repo`, `/resume-work` and `/join-team` offer you first, never what you may run. With no job recorded you are a developer.
 
 Offered first to this job:
 

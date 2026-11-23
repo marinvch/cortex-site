@@ -32,42 +32,43 @@ or none. A write passes no author — Cortex finds it from `CORTEX_AUTHOR`, then
 and the result says which layout the entry landed in. When no name was usable the entry goes to
 the shared day file and the result carries a notice, which is how the model learns to tell you.
 
-## The `ai-os` command
+## The `cortex` command
 
 The server's second adapter is a command line — from a clone of the Cortex repository,
-`node mcp/ai-os.js <command>`. It kept its old name, because it is typed in commands and stored in
-configs people already have.
+`node mcp/cortex.js <command>`, or `cortex <command>` once `npm link` has been run in `mcp/`.
+`tools/cortex-setup.mjs` says which applies on your machine. The old `ai-os` and `ai-os-mcp` names
+and `mcp/ai-os.js` still work through 3.x and are removed in 4.0.0.
 
 | Command | Does | Needs |
 |---|---|---|
-| `ai-os setup-plugins` | install the Cortex Core plugin bundle | nothing |
-| `ai-os setup-plugins --status` | per tier, which plugins are installed; `--json`, `--tier`, `--plugins-dir`. Read-only | nothing |
-| `ai-os team init` | seed and push a team-brain | a vault |
-| `ai-os team add` | write this repo's project file into the team-brain, then the connector | a vault |
-| `ai-os team member` | add or update one member (`--handle`, `--roles`, `--projects`, `--job`) in the brain's `team.json`; commit, push | a root, a team |
-| `ai-os ask` | send `--to <role\|project> --title --body` as `asks/<id>.md`; commit, push | a root, a team |
-| `ai-os inbox` | pull, then the open asks for you and the answers to yours; `--json` | a root, a team |
-| `ai-os answer` | append `--body` to ask `--id`, set `--status`; commit, push | a root, a team |
-| `ai-os contract publish` | write `--file <contract.json>` as `projects/<slug>/contract.json` + `.md`; commit, push when changed | a root, a team |
-| `ai-os contract show` | one project's contract (`--project`, `--path`); `--json` | a root, a team |
-| `ai-os contract who-calls` | which projects call `--path "[METHOD] /p"`, and which serve it; `--json` | a root, a team |
-| `ai-os contract list` | the projects that have published a contract | a root, a team |
-| `ai-os stories publish` | write `--file <stories.json>`, this repo's story links, as `projects/<slug>/stories.json`; commit, push when changed | a root, a team |
-| `ai-os integrations list\|add\|remove\|workflow` | the trackers in `team.json`; `add --stories` also mirrors that tracker's epics and stories; `workflow --write` commits the scheduled sync | a root, a team |
-| `ai-os sync` | asks ↔ trackers, one commit per run; `--dry-run`, `--status`, `--clone <checkout>` | a root, a team |
-| `ai-os project list` | every project the brain knows, as JSON | a vault |
-| `ai-os project check` | validate the team's project files; exit 1 on an error or a withheld file | a vault, a team |
-| `ai-os project remove` | delete one project file with `git rm`, commit, push | a vault, a team |
-| `ai-os graph stats\|node\|neighbors\|cluster\|hubs\|bridges\|path` | this repo's import graph, from its Cortex index; writes nothing | an index |
-| `ai-os graph callers\|callees\|defines` | its functions and calls; writes nothing | an index, the parser add-on |
-| `ai-os graph story\|stories-for\|risk` | the team's stories, traced to code through the team-brain | a root, a team |
-| `ai-os digest` | append a git digest to a file | nothing |
-| `ai-os catch-up` | notes and history since a date | a repo or a vault |
+| `cortex setup-plugins` | install the Cortex Core plugin bundle | nothing |
+| `cortex setup-plugins --status` | per tier, which plugins are installed; `--json`, `--tier`, `--plugins-dir`. Read-only | nothing |
+| `cortex team init` | seed and push a team-brain | a vault |
+| `cortex team add` | write this repo's project file into the team-brain, then the connector | a vault |
+| `cortex team member` | add or update one member (`--handle`, `--roles`, `--projects`, `--job`) in the brain's `team.json`; commit, push | a root, a team |
+| `cortex ask` | send `--to <role\|project> --title --body` as `asks/<id>.md`; commit, push | a root, a team |
+| `cortex inbox` | pull, then the open asks for you and the answers to yours; `--json` | a root, a team |
+| `cortex answer` | append `--body` to ask `--id`, set `--status`; commit, push | a root, a team |
+| `cortex contract publish` | write `--file <contract.json>` as `projects/<slug>/contract.json` + `.md`; commit, push when changed | a root, a team |
+| `cortex contract show` | one project's contract (`--project`, `--path`); `--json` | a root, a team |
+| `cortex contract who-calls` | which projects call `--path "[METHOD] /p"`, and which serve it; `--json` | a root, a team |
+| `cortex contract list` | the projects that have published a contract | a root, a team |
+| `cortex stories publish` | write `--file <stories.json>`, this repo's story links, as `projects/<slug>/stories.json`; commit, push when changed | a root, a team |
+| `cortex integrations list\|add\|remove\|workflow` | the trackers in `team.json`; `add --stories` also mirrors that tracker's epics and stories; `workflow --write` commits the scheduled sync | a root, a team |
+| `cortex sync` | asks ↔ trackers, one commit per run; `--dry-run`, `--status`, `--clone <checkout>` | a root, a team |
+| `cortex project list` | every project the brain knows, as JSON | a vault |
+| `cortex project check` | validate the team's project files; exit 1 on an error or a withheld file | a vault, a team |
+| `cortex project remove` | delete one project file with `git rm`, commit, push | a vault, a team |
+| `cortex graph stats\|node\|neighbors\|cluster\|hubs\|bridges\|path` | this repo's import graph, from its Cortex index; writes nothing | an index |
+| `cortex graph callers\|callees\|defines` | its functions and calls; writes nothing | an index, the parser add-on |
+| `cortex graph story\|stories-for\|risk` | the team's stories, traced to code through the team-brain | a root, a team |
+| `cortex digest` | append a git digest to a file | nothing |
+| `cortex catch-up` | notes and history since a date | a repo or a vault |
 
 `setup-plugins --status` reads Claude Code's plugin registry and reports each tier as `installed`,
 `partial`, `missing` or `unknown`. It installs nothing and starts no `claude`. The three `project`
 commands are refused in repo mode, because the team-brain's clone lives under the vault. On a `lab`
-profile a project file is committed in the local clone and not pushed. `ai-os help` lists every team
+profile a project file is committed in the local clone and not pushed. `cortex help` lists every team
 command.
 
 ## Asks and contracts, on a team
@@ -91,14 +92,14 @@ project serves, calls and emits; with `calls`, who calls an endpoint and who ser
 is a floor and says so. `catch_me_up` reports each project's contract drift since the date.
 
 A team that selected GitHub, ServiceNow or Jira in `team.json` has its asks synced there:
-`ask`, `answer` and `inbox` sync the asks they touch, and `ai-os sync` syncs all of them. Sync is
+`ask`, `answer` and `inbox` sync the asks they touch, and `cortex sync` syncs all of them. Sync is
 idempotent — the link is written before an item is created, and the tracker is searched for the
 ask's marker first — so a retry makes no duplicate. The primary tracker wins on status, the brain on
 the text. No MCP tool configures a tracker.
 
 ## The code graph, as a tool
 
-The `graph` tool, and `ai-os graph` for an agent without MCP, answer questions about a repo's
+The `graph` tool, and `cortex graph` for an agent without MCP, answer questions about a repo's
 structure from its stored index: `stats`, `node`, `neighbors`, `cluster`, `hubs`, `bridges` and
 `path` over the import graph, and `callers`, `callees` and `defines` over functions and calls when
 the [parser add-on](#/index-and-findings) is installed. Both refuse a missing or stale index and
@@ -108,7 +109,7 @@ rather than answering "no callers". A count of callers is a floor of extracted c
 On a team, `story`, `stories-for` and `risk` read the team-brain. A tracker the team turned on with
 `--stories` has its epics and stories mirrored to `stories/<key>.md` on each full sync — key,
 title, status, epic, assignee and link, never the description. Each repo publishes which code each
-ticket key touched with `ai-os stories publish`: commits, then files, each with its cluster, whether
+ticket key touched with `cortex stories publish`: commits, then files, each with its cluster, whether
 it is a hub and whether a test covers it. `risk` names the stories whose code no test covers. A
 story's code is a floor: a commit that names no key is invisible to it.
 

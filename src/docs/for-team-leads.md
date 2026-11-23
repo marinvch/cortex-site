@@ -25,7 +25,7 @@ Run `/create-team` once to create the team-brain. Each member then runs `/join-t
 
 ## What your job changes
 
-On a team, your job is recorded once in the team-brain's roster: `ai-os team member --job lead`, which `/join-team` asks for. It decides what `/setup-repo`, `/resume-work` and `/join-team` offer you first, never what you may run. With no job recorded you are a developer.
+On a team, your job is recorded once in the team-brain's roster: `cortex team member --job lead`, which `/join-team` asks for. It decides what `/setup-repo`, `/resume-work` and `/join-team` offer you first, never what you may run. With no job recorded you are a developer.
 
 Offered first to this job:
 

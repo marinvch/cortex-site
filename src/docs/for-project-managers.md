@@ -20,7 +20,7 @@ stays in your own environment.
 
 ## Start here
 
-Ask `/story-map` for the status of an epic. It reads the team-brain through the MCP tools: the stories the tracker sync mirrored, and the code each repo published for them. The team's tracker must have its stories turned on (`ai-os integrations add <kind> --stories`), which a developer or lead does once.
+Ask `/story-map` for the status of an epic. It reads the team-brain through the MCP tools: the stories the tracker sync mirrored, and the code each repo published for them. The team's tracker must have its stories turned on (`cortex integrations add <kind> --stories`), which a developer or lead does once.
 
 ## When to reach for what
 
@@ -31,7 +31,7 @@ Ask `/story-map` for the status of an epic. It reads the team-brain through the 
 
 ## What your job changes
 
-On a team, your job is recorded once in the team-brain's roster: `ai-os team member --job pm`, which `/join-team` asks for. It decides what `/setup-repo`, `/resume-work` and `/join-team` offer you first, never what you may run. With no job recorded you are a developer.
+On a team, your job is recorded once in the team-brain's roster: `cortex team member --job pm`, which `/join-team` asks for. It decides what `/setup-repo`, `/resume-work` and `/join-team` offer you first, never what you may run. With no job recorded you are a developer.
 
 Offered first to this job:
 

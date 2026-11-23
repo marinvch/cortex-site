@@ -23,6 +23,8 @@ const docs: { path: string; title: string; file: string }[] = [
   { path: '/for-team-leads', title: 'For team leads', file: 'for-team-leads' },
   { path: '/for-project-managers', title: 'For project managers', file: 'for-project-managers' },
   { path: '/for-qa', title: 'For QA', file: 'for-qa' },
+  { path: '/for-product-owners', title: 'For product owners', file: 'for-product-owners' },
+  { path: '/for-business-analysts', title: 'For business analysts', file: 'for-business-analysts' },
   { path: '/index-and-findings', title: 'Index & findings', file: 'index-and-findings' },
   { path: '/cortex-view', title: 'Cortex View', file: 'cortex-view' },
   { path: '/context-layer', title: 'The context layer', file: 'context-layer' },

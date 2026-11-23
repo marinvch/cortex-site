@@ -31,7 +31,7 @@
       "name": "capture"
     },
     {
-      "description": "Assemble notes + team-brain git history since <since> as raw material for the agent to summarize.",
+      "description": "Assemble notes, the team's decisions + team-brain git history since <since> as raw material for the agent to summarize.",
       "modes": [
         "vault"
       ],
@@ -128,7 +128,7 @@
       "does": "the prompt gate — scores a vague prompt and sharpens it before work starts",
       "invocation": "model",
       "name": "clarify-request",
-      "when": "automatic"
+      "when": "on a vague prompt"
     },
     {
       "does": "install the Cortex Core plugin bundle, and register `mcp/server.js` at user scope for recall/capture",
@@ -324,5 +324,5 @@
     }
   ],
   "schema": 1,
-  "version": "3.0.0"
+  "version": "3.2.0"
 }

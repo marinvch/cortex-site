@@ -15,8 +15,9 @@ maps every old name to its new one.
 
 **Not a developer, or not in Claude Code?** The pages under *By role* say what each job installs:
 the plugin for [developers](#/for-developers), [team leads](#/for-team-leads) and [QA](#/for-qa),
-a role pack for [project managers](#/for-project-managers), and either for
-[architects](#/for-architects).
+a role pack for [project managers](#/for-project-managers),
+[product owners](#/for-product-owners) and [business analysts](#/for-business-analysts), and either
+for [architects](#/for-architects).
 
 Then turn on auto-update once — Claude Code leaves it off for third-party marketplaces like this
 one, so without it no release reaches you. **Keeping it current**, below, has the clicks.
