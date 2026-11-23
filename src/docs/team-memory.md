@@ -64,7 +64,7 @@ and nothing more — adding a project is adding a file, and removing one is dele
 - **Removing a project** deletes its file, commits and pushes. The project's notes folder is never
   deleted, and other project files that still name it are reported, not edited.
 
-In a connected repo, `/whats-changed` pulls the team-brain first (fast-forward only) and returns
+In a connected repo, `/whats-changed` pulls the team-brain first and returns
 what every repo of the team captured since the date, and which contracts changed, alongside the
 local notes. If the pull fails it says so, rather than reporting a quiet week from a stale clone. A
 memory entry is attributed to its author only when its file names one; an older day file's entries

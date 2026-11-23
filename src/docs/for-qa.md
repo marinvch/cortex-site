@@ -24,7 +24,7 @@ In a repo `/setup-repo` has indexed, `/change-impact <files>` lists the dependen
 
 ## What your job changes
 
-On a team, your job is recorded once in the team-brain's roster: `ai-os team member --job qa`, which `/join-team` asks for. It decides what `/setup-repo`, `/resume-work` and `/join-team` offer you first, never what you may run. With no job recorded you are a developer.
+On a team, your job is recorded once in the team-brain's roster: `cortex team member --job qa`, which `/join-team` asks for. It decides what `/setup-repo`, `/resume-work` and `/join-team` offer you first, never what you may run. With no job recorded you are a developer.
 
 Offered first to this job:
 

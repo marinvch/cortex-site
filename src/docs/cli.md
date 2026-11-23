@@ -26,7 +26,7 @@ node index/cortex-shared-plugin.mjs .  # on a team repo: what --write would add 
 Every command prints a `Next →` line when it finishes, and refuses an unknown or misspelled flag
 with a message naming it — a typo is never reinterpreted as a path.
 
-The `ai-os` command — plugin tiers, a team-brain and its project files — is listed on
+The `cortex` command — plugin tiers, a team-brain and its project files — is listed on
 [MCP brain](#/mcp), beside the server it shares its code with.
 
 ## Tools — `tools/`

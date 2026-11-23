@@ -56,7 +56,7 @@ Run `/summarize-files` first and each file card also carries what that file *doe
 
 The same graph answers questions without the page. `node index/cortex-graph.mjs .` prints the
 graph report and writes nothing. An agent asks through the `graph` MCP tool, or
-`node mcp/ai-os.js graph <op>` where MCP is not set up: `stats`, `node`, `neighbors`, `cluster`,
+`node mcp/cortex.js graph <op>` where MCP is not set up: `stats`, `node`, `neighbors`, `cluster`,
 `hubs`, `bridges` and `path` from the stored index, and `callers`, `callees` and `defines` with
 the [parser add-on](#/index-and-findings). Both refuse a missing or stale index and name the
 command that rebuilds it.
